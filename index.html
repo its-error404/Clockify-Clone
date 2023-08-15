@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clockify</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- navbar components -->
+  <link rel="stylesheet" href="components/navbar/navbar.css">
+  <script src="components/navbar/navbar.js"></script>
+  <!-- navbar components -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <nav>
+    <div class="side-nav">
+      <div class="side-nav__items">
+        <div class="side-nav__item">
+          <a href="#tracker"> <img src="assets/View Time tracker.svg" alt="" width="20px"> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href="#calender"> <img src="assets/View Calendar.svg" alt="" width="20px"> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href=""> <img src="assets/View dashboard.svg" alt="" width="20px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href=""> <img src="assets/View Reports.svg" alt="" width="20px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href=""> <img src="assets/View Projects.svg" alt="" width="20px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href=""> <img src="assets/View Clients.svg" alt="" width="20px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href=""> <img src="assets/View tags.svg" alt="" width="20px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item">
+          <a href=""> <img src="assets/View Settings.svg" alt="" width="20px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="side-nav__item" id="last-arrow">
+          <a> <img src="assets/Up arrow symbol.svg" alt="" width="10px" /> </a>
+          <div class="item-menu">
+            <a href="">Time Tracker</a>
+          </div>
+        </div>
+        <div class="additional-items">
+          <div class=" hidden-item">
+            <a href=""> <img src="assets/View Timesheet.svg" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href=""> <img src="assets/View Kiosks.svg" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href=""> <img src="assets/View Schedule.svg" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href=""> <img src="assets/View Expenses.svg" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href=""> <img src="assets/View Activity.svg" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href=""> <img src="assets/View Approvals.svg" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href=""> <img src="assets/invoices.png" alt="" width="20px" /> </a>
+            <div class="item-menu">
+              <a href="">Time Tracker</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="top-nav__left">
+      <img src="assets/menu.svg" width="28px" alt="" style="margin-left: 10px; margin-top: 5px;" />
+      <a href="#"> <img src="assets/svgexport-2.svg" width="100px" style="margin-top: 7px;" /> </a>
+    </div>
+    <div class="top-nav__right">
+      <div class="user-workspace-dropdown">
+        <button class="user-workspace__button">User's workspace</button>
+        <div class="workspace-container">
+          <div class="workspace-header">
+            <p>WORKSPACES</p>
+            <p>Manage</p>
+          </div>
+          <div class="workspace-info">
+            <a href="#">User's Workspace</a>
+            <p>
+              <img src="assets/Checkmark green symbol.svg" width="20px" /> Active
+            </p>
+          </div>
+        </div>
+      </div>
+      <button class="upgrade__button">UPGRADE</button>
+      <div class="help">
+        <button class="help__button" id="help__button">
+          <img src="assets/Help options.svg" alt="" />
+          <img src="assets/View help.svg" alt="" />
+        </button>
+        <div class="help__dropdown" id="help-dropdown">
+          <a href="">Documentation</a>
+          <a href="">Tutorials</a>
+          <a href="">Contact</a>
+        </div>
+      </div>
+      <div class="notifications">
+        <button class="notifications__button">
+          <img src="assets/View notifications.svg" alt="" />
+        </button>
+        <div class="notifications__dropdown">
+          <div class="notifications__header">
+            <p>NOTIFICATIONS</p>
+          </div>
+          <br />
+          <p>No new notifications</p>
+        </div>
+      </div>
+      <div class="profile">
+        <button class="profile__button">U</button>
+        <div class="profile__dropdown" id="profile-dropdown">
+          <a href="">User</a>
+          <a href="">user@gmail.com</a>
+          <a href="">Profile settings</a>
+          <div class="dark-theme">
+            <a href="">Dark Theme <img src="assets/toggle-on-icon.svg" width="30px" /></a>
+          </div>
+          <a href="https://clockify.me/apps">Download apps</a>
+          <div class="try-chat">
+            <a href="https://pumble.com/">Try chat app <button>NEW</button></a>
+          </div>
+          <a href="">Log out</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</body>
+
+</html>
