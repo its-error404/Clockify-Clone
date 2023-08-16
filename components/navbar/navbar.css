@@ -77,7 +77,12 @@ body {
     position: relative;
 }
 
-/* .upgrade__button::after
+
+
+/*  TODO: Upgrade button implementation, line
+
+
+ .upgrade__button::after
 {
     content: "";
     position: absolute;
@@ -88,7 +93,9 @@ body {
     transform: rotate(90deg);
     background-color: #cdc8c8;
     margin-left: 15px;
-} */
+} 
+
+*/
 
 .user-workspace__button::after {
     margin-left: 10px;

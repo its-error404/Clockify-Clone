@@ -144,12 +144,10 @@
     line-height: 30px;
     text-align: start;
     margin-left: 20px;
-    /* margin-right: 20px; */
     display: flex;
     justify-items: center;
-    /* border: 1px solid red; */
     padding: .678rem 1.4286rem;
-    /* border: 1px solid #ccc; */
+    
 }
 
 .item-text p:hover {
@@ -159,10 +157,6 @@
 .item-menu a:hover{
     background-color: #E4EBEF;
 }
-
-/* .item-menu:hover{
-    background-color: #E4EBEF;
-} */
 
 .side-nav__item:hover .item-menu
 {   
