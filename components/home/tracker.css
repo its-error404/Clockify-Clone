@@ -12,15 +12,17 @@
 .time-tracker{
     display: flex;
     gap: 30px;
-    border: 1px solid red;
+    border: 1px solid rgb(152, 147, 147);
     height: 60px;
     margin-top: 35px;
     margin-left: -10px;
+    background-color: white;
 }
 
 .time-tracker__header{
     display: flex;
     gap: 20px;
+    background-color: white;
 }
 
 .other-features{
@@ -46,7 +48,14 @@
     width: 1250px;
     height: 40px;
     margin: 8px;
+    border: 1px gray solid;
+    background-color: white;
 }
+
+.project-info{
+    background-color: white;
+}
+
 
 .from-time input{
     width: 40px;

@@ -37,10 +37,18 @@
         <div class="side-nav__items">
           <div class="side-nav__item">
             <a href="#tracker">
+              <img src="assets/View Timesheet.svg" alt="" width="20px" />
+            </a>
+            <div class="item-menu">
+              <a href="">TIME SHEET</a>
+            </div>
+          </div>
+          <div class="side-nav__item">
+            <a href="#tracker">
               <img src="assets/View Time tracker.svg" alt="" width="20px" />
             </a>
             <div class="item-menu">
-              <a href="">Time Tracker</a>
+              <a href="">TIME TRACKER</a>
             </div>
           </div>
           <div class="side-nav__item">
@@ -48,7 +56,7 @@
               <img src="assets/View Calendar.svg" alt="" width="20px" />
             </a>
             <div class="item-menu">
-              <a href="">Calender</a>
+              <a href="">CALENDER</a>
             </div>
           </div>
           <div class="side-nav__item">
@@ -56,7 +64,7 @@
               <img src="assets/View dashboard.svg" alt="" width="20px" />
             </a>
             <div class="item-menu">
-              <a href="">Time Tracker</a>
+              <a href="">DASHBOARD</a>
             </div>
           </div>
           <div class="side-nav__item">
@@ -64,7 +72,20 @@
               <img src="assets/View Reports.svg" alt="" width="20px" />
             </a>
             <div class="item-menu">
-              <a href="">Time Tracker</a>
+              <a href="" style="margin-right: 50px; color: black; font-size: 14px;">REPORTS</a>
+              <hr style="margin-top: 5px;">
+              <div class="item-text">
+                <h5 style="margin-top: 10px;">TIME</h5>
+                <p style="margin-top: 10px;">Summary</p>
+                <p>Detailed</p>
+                <p>Weekly</p>
+                <p>Shared</p>
+                <h5 style="margin-top: 10px;">TEAM</h5>
+                <p style="margin-top: 10px;">Attendance</p>
+                <p>Assignments</p>
+                <h5 style="margin-top: 10px;">EXPENSE</h5>
+                <p style="margin-top: 10px;">Detailed</p>
+              </div>
             </div>
           </div>
           <div class="side-nav__item">
@@ -72,7 +93,7 @@
               <img src="assets/View Projects.svg" alt="" width="20px" />
             </a>
             <div class="item-menu">
-              <a href="">Time Tracker</a>
+              <a href="">PROJECTS</a>
             </div>
           </div>
           <div class="side-nav__item">
@@ -173,6 +194,7 @@
           width="28px"
           alt=""
           style="margin-left: 10px; margin-top: 5px"
+          id="menu-icon"
         />
         <a href="#">
           <img
@@ -270,7 +292,10 @@
           <div class="dollar">
             <h3>$</h3>
           </div>
-          <!-- <div class="times">
+          <!-- TODO: timer implementation
+
+
+             <div class="times">
             <div class="from-time">
               <input type="text" id="from-input" placeholder="HH:MM:SS" />
             </div>
@@ -285,7 +310,9 @@
           <!-- <div class="calendar">
             <img src="assets/View Calendar.svg" id="calendar-icon" alt="" />
             <input type="date" id="date-input" class="calendar-hidden" />
-          </div> -->
+          </div> 
+        
+        -->
           <div class="timer" id="timer">
             <p>00:00:00</p>
           </div>

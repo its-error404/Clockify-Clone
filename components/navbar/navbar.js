@@ -13,6 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  const menuIcon = document.getElementById('menu-icon')
+  const sideNav = document.querySelector('.side-nav')
+  let sideNavExpanded = false
+
+  menuIcon.addEventListener('click', (e)=>{
+    if(sideNavExpanded){
+    sideNav.style.width = '3.5vw'
+    }
+    else{
+      sideNav.style.width = '10vw'
+    }
+   sideNavExpanded = !sideNavExpanded
+  })
+
   const upgradeButton = document.querySelector(".upgrade__button");
 
   upgradeButton.addEventListener("click", (e) => {
