@@ -1,0 +1,137 @@
+.feature-section{
+   width: 92vw;
+   margin-left: 100px;
+}
+
+.add-project{
+    display: flex;
+    gap: 10px;
+    color: #5EBCF7;
+}
+
+.time-tracker{
+    display: flex;
+    gap: 30px;
+    border: 1px solid rgb(152, 147, 147);
+    height: 60px;
+    margin-top: 35px;
+    margin-left: -10px;
+    background-color: white;
+}
+
+.time-tracker__header{
+    display: flex;
+    gap: 20px;
+    background-color: white;
+}
+
+.other-features{
+    display: flex;
+    margin-top: 18px;
+    gap: 80px;
+}
+.timer{
+    margin-left: -45px;
+}
+.timer p{
+    font-size: 20px;
+}
+.add-project{
+    display: flex;
+}
+
+.add-project p{
+    margin-top: 18px;
+}
+
+.project-info input{
+    width: 1250px;
+    height: 40px;
+    margin: 8px;
+    border: 1px gray solid;
+    background-color: white;
+}
+
+.project-info{
+    background-color: white;
+}
+
+
+.from-time input{
+    width: 40px;
+    height: 40px;
+}
+
+.to-time input{
+    width: 40px;
+    height: 40px;
+}
+
+.calender{
+    margin-left: -20px;
+}
+
+.calendar-hidden {
+    display: inline-flex;
+    margin-left: 10px;
+}
+
+.times{
+    margin-top: -10px;
+    display: inline-flex;
+    gap: 10px;
+    margin-left: -20px;
+}
+
+.dollar{
+    font-size: larger;
+    color: gray;
+    margin-left: -40px;
+    margin-top: -3px;
+}
+
+.timer-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.input-container {
+    margin-bottom: 10px;
+}
+
+.timers {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+   .total-time-box {
+        margin-top: -10px;
+        padding-left: 30px;
+        margin-bottom: 8px;
+        padding-right: 30px;
+        background-color: #f2f2f2;
+        border: 1px solid #ccc;
+        display: inline-block;
+    }
+
+    .tags{
+        margin-left: 15px;
+    }
+
+    .start-button{
+        margin-left: -40px;
+        margin-top: -8px;
+    }
+
+    .start-button button{
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding-left: 28px;
+        padding-right: 28px;
+        background-color: #3FAAF5;
+        color: white;
+        border: none;
+    }

@@ -1,0 +1,370 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid rgb(202, 195, 195);
+    border-left: 3px solid #47B1F4;
+    position: relative;
+    background-color: white;
+}
+
+button {
+    cursor: pointer;
+}
+
+body {
+    background-color: #F3F7F8;
+}
+
+.top-nav__left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.top-nav__right {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    margin-right: 20px;
+}
+
+.upgrade__button {
+    background-color: white;
+    color: #47B1F4;
+    border: solid 1px;
+    padding: 5px 10px;
+    border-radius: 1px;
+    cursor: pointer;
+    margin-right: 10px;
+    position: relative;
+}
+
+.upgrade__button:hover {
+    background-color: #47B1F4;
+    color: white;
+    transition: all 0.3s;
+}
+
+.top-nav__right img {
+    margin-right: 10px;
+}
+
+.profile__button {
+    border: 1px solid transparent;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+}
+
+.user-workspace-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-workspace__button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    font-size: inherit;
+    color: #333;
+    position: relative;
+}
+
+
+
+/*  TODO: Upgrade button implementation, line
+
+
+ .upgrade__button::after
+{
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 500px;
+    width: 30px;
+    height: 0.5px;
+    transform: rotate(90deg);
+    background-color: #cdc8c8;
+    margin-left: 15px;
+} 
+
+*/
+
+.user-workspace__button::after {
+    margin-left: 10px;
+    content: '\25BE';
+}
+
+.workspace-container {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin-left: -100px;
+    margin-top: 10px;
+}
+
+.workspace-container.visible {
+    display: block;
+    width: 250px;
+    padding-top: 10px;
+}
+
+.workspace-container a {
+    color: black;
+    padding: 12px 14px;
+    text-decoration: none;
+    display: block;
+}
+
+.workspace-info {
+    display: flex;
+    align-items: center;
+    border: 1px;
+    margin-bottom: 10px;
+    background-color: rgb(229, 234, 239)
+}
+
+.workspace-info a {
+    text-decoration: none;
+}
+
+.workspace-info p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: rgb(125, 195, 143)
+}
+
+.workspace-info img {
+    margin-right: 5px;
+}
+
+.workspace-header {
+    display: flex;
+    gap: 80px;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 15px;
+    font-size: .800rem;
+    color: #6c757d;
+}
+
+.workspace-header p:nth-child(2) {
+    color: #47B1F4;
+    cursor: pointer;
+}
+
+.help__button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    color: #333;
+    position: relative;
+}
+
+.help__button::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    width: 1px;
+    left: 20%;
+    height: 0.5px;
+    transform: rotate(90deg);
+    background-color: #cdc8c8;
+}
+
+.help__button::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    width: 1px;
+    left: 20%;
+    height: 0.5px;
+    transform: rotate(90deg);
+    background-color: #cdc8c8;
+}
+
+
+.help__dropdown {
+    position: absolute;
+    border-top: 1px solid rgb(238, 229, 229);
+    border-bottom: 1px solid rgb(238, 229, 229);
+    border-left: none;
+    border-right: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    ;
+    margin-top: 20px;
+    margin-left: -80px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    visibility: hidden;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+
+}
+
+.help__dropdown.visible {
+    visibility: visible;
+}
+
+.help__dropdown a {
+    padding: 10px;
+    display: block;
+    color: black;
+    text-decoration: none;
+}
+
+.help__dropdown a:hover {
+    border: 1px solid gray;
+    background-color: rgb(229, 234, 239);
+    color: black;
+    text-decoration: none;
+}
+
+.notifications {
+    position: relative;
+    display: inline-block;
+}
+
+.profile {
+    position: relative;
+}
+
+.notifications__button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.notifications__dropdown {
+    position: absolute;
+    display: none;
+    top: 30px;
+    left: -200px;
+    width: 300px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.profile__dropdown {
+
+    position: absolute;
+    display: none;
+    top: 40px;
+    left: -300px;
+    width: 300px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    max-height: 310px;
+}
+
+.profile__dropdown.visible {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 4px;
+}
+
+.profile__dropdown>a:first-child {
+    color: black;
+    font-size: 16px;
+}
+
+.profile__dropdown>a:nth-child(2) {
+    font-size: 0.9rem;
+}
+
+.profile__dropdown>a:last-child {
+    border-top: 1px solid rgb(222, 218, 218);
+    margin-top: 2px;
+}
+
+.side-nav__item {
+    border-bottom: none;
+    border-top: none;
+    position: relative;
+}
+
+.profile__dropdown a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    color: rgb(148, 149, 148);
+    text-decoration: none;
+    font-size: 1rem;
+    font-size: 12px;
+}
+
+.profile__dropdown a:visited .dark-theme {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.profile__dropdown a:hover {
+    background-color: #E5EAEF;
+    color: #6c757d;
+    width: 300px;
+}
+
+.notifications__dropdown>p:last-child {
+    color: #6c757d;
+    font-size: 1rem;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+.notifications__header {
+    text-align: start;
+    margin-bottom: 10px;
+    color: #6c757d;
+    padding: 5px;
+
+}
+
+.dark-theme {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.dark-theme img {
+    margin-left: 152px;
+}
+
+.try-chat {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.try-chat button {
+    color: white;
+    background-color: rgb(92, 177, 80);
+    margin-left: 135px;
+    padding: 3px;
+}
+
+.notifications__dropdown.visible {
+    display: block;
+}
