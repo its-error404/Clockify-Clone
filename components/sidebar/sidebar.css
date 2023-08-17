@@ -1,14 +1,26 @@
 .side-nav {
-    position:fixed;
-    top: 50px;
-    bottom: 0;
-    height: 97vh;
+    height: 102vh;
     width: 3.5vw;
-    left: -3px;
     z-index: 5;
+    transition: width 0.3s ease;
     border-left: 3px solid #47B1F4;
     background-color: white;
     border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin-top: -1.8px;
+}
+
+.side-nav.expanded{
+    width: 10vw;
+}
+
+.icon-container{
+    display: flex;
+    gap: 10px;
+}
+
+.icon-container p{
+    display: none;
 }
 
 .side-nav__items {
@@ -18,6 +30,7 @@
     margin-left: -10px;
     padding-top: 10px;
     padding-bottom: 10px;
+    border: none;
     
 }
 
@@ -40,35 +53,6 @@
     z-index: 1;
 }
 
-.hidden-item {
-    display: block;
-    padding-left: 30px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    position: relative;
-    overflow: hidden;
-    background-color: transparent;
-    border-top: none;
-}
-
-.hidden-item a {
-    position: relative;
-    z-index: 1;
-    background-color: transparent;
-}
-
-
-.hidden-item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background-color: #E5EAEF;
-    transition: left 0.1s ease-in-out;
-}
-
 .side-nav__item::before {
     content: "";
     position: absolute;
@@ -78,14 +62,6 @@
     height: 100%;
     background-color: #E5EAEF;
     transition: left 0.1s ease-in-out;
-}
-
-.hidden-item:hover::before {
-    left: 0;
-}
-
-.hidden-item:hover {
-    background-color: transparent;
 }
 
 .side-nav__item:hover::before {
@@ -104,7 +80,6 @@
     flex-flow: column nowrap;
     background-color: white;
     clip-path: polygon(5% 43%, 10% 38%, 10% 12%, 89% 12%, 89% 70%, 10% 71%, 10% 49%);
-    border: 1px solid #ccc;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 6;
     max-width: 450px;
@@ -115,6 +90,13 @@
     justify-content: center;
     text-align: center;
     padding-top: 15px;
+}
+
+.dashboard-item{
+    max-height: 1000px;
+    margin-top: -120px;
+    max-width: 500px;
+    clip-path: polygon(4% 22%, 11% 19%, 11% 0, 81% 0, 83% 100%, 12% 100%, 12% 29%) !important
 }
 
 .item-menu__text{
@@ -159,17 +141,23 @@
     color: gray;
 }
 
-
 .side-nav__item:hover .item-menu
 {   
     display: block;
 }
 
 .additional-items {
+    position: relative;
     margin-top: 10px;
     display: none;
+    border-left: 1px solid #47B1F4;
+    border-top: none;
+    
 }
 
 .expanded.additional-items {
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+    border-left: 3px solid #47B1F4;
+    border-top: none;
 }
