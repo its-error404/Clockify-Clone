@@ -13,20 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const menuIcon = document.getElementById('menu-icon')
-  const sideNav = document.querySelector('.side-nav')
-  let sideNavExpanded = false
-
-  menuIcon.addEventListener('click', (e)=>{
-    if(sideNavExpanded){
-    sideNav.style.width = '3.5vw'
-    }
-    else{
-      sideNav.style.width = '10vw'
-    }
-   sideNavExpanded = !sideNavExpanded
-  })
-
   const upgradeButton = document.querySelector(".upgrade__button");
 
   upgradeButton.addEventListener("click", (e) => {
@@ -84,4 +70,24 @@ document.addEventListener("DOMContentLoaded", () => {
   {
     additionalItems.classList.toggle('expanded')
   })
+
+  const menuIcon = document.getElementById("menu-icon");
+  const sideNav = document.querySelector(".side-nav");
+  const menuText = document.querySelector(".menu-text");
+  const itemMenu = document.querySelector('.item-menu');
+  
+  menuIcon.addEventListener("click", () => {
+    sideNav.classList.toggle("expanded");
+    lastArrow.classList.toggle("rotate-icon");
+    menuText.classList.toggle("active");
+    
+    if (sideNav.classList.contains("expanded")) {
+      itemMenu.style.display = "none";
+      itemMenu.style.visibility = 'hidden'
+    }
+  });
 });
+
+ 
+
+

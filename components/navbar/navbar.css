@@ -7,14 +7,12 @@ nav {
     border-left: 3px solid #47B1F4;
     position: relative;
     background-color: white;
+    max-height: 50px;
+    width: 100vw;
 }
 
 button {
     cursor: pointer;
-}
-
-body {
-    background-color: #F3F7F8;
 }
 
 .top-nav__left {
@@ -77,8 +75,6 @@ body {
     position: relative;
 }
 
-
-
 /*  TODO: Upgrade button implementation, line
 
 
@@ -125,6 +121,11 @@ body {
     text-decoration: none;
     display: block;
 }
+
+.rotate-icon {
+    transform: rotate(180deg);
+  }
+
 
 .workspace-info {
     display: flex;
