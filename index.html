@@ -20,6 +20,7 @@
 
   <!-- tracker components -->
   <link rel="stylesheet" href="components/home/tracker.css" />
+  <link rel="stylesheet" href="components/tracker/addProject.css">
   <script src="components/home/tracker.js"></script>
   <!-- tracker components -->
 
@@ -38,7 +39,7 @@
 <body>
   <nav>
     <div class="top-nav__left">
-      <img src="assets/menu.svg" width="28px" alt="" style="margin-left: 10px; margin-top: 5px" id="menu-icon" />
+      <img src="assets/menu.svg" width="28px" alt="" style="margin-left: 10px; margin-top: 5px" id="menu-icon" class="menu-icon"/>
       <a href="#">
         <img src="assets/svgexport-2.svg" width="100px" style="margin-top: 7px" />
       </a>
@@ -105,12 +106,12 @@
   <div class="home-container">
     <div class="side-nav">
       <div class="side-nav__items">
-        <div class="side-nav__item">
 
+        <div class="side-nav__item">
           <a href="">
             <div class="icon-container">
               <img src="assets/View Timesheet.svg" alt="" width="20px" />
-              <p>TIME SHEET</p>
+              <p  class="menu-text">TIME SHEET</p>
             </div>
           </a>
           <div class="item-menu">
@@ -119,11 +120,12 @@
             </div>
           </div>
         </div>
+
         <div class="side-nav__item">
           <a href="">
             <div class="icon-container">
               <img src="assets/View Time tracker.svg" alt="" width="20px" />
-              <p>TIME TRACKER</p>
+              <p  class="menu-text">TIME TRACKER</p>
             </div>
           </a>
           <div class="item-menu">
@@ -136,7 +138,7 @@
           <a href="#calender">
             <div class="icon-container">
               <img src="assets/View Calendar.svg" alt="" width="20px" />
-              <p>CALENDER</p>
+              <p  class="menu-text">CALENDER</p>
             </div>
           </a>
           <div class="item-menu">
@@ -149,7 +151,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View dashboard.svg" alt="" width="20px" />
-              <p>DASHBOARD</p>
+              <p  class="menu-text">DASHBOARD</p>
             </div>
           </a>
           <div class="item-menu">
@@ -162,7 +164,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View Reports.svg" alt="" width="20px" />
-              <p>REPORTS</p>
+              <p  class="menu-text">REPORTS</p>
             </div>
           </a>
           <div class="item-menu dashboard-item">
@@ -188,7 +190,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View Projects.svg" alt="" width="20px" />
-              <p>PROJECTS</p>
+              <p  class="menu-text">PROJECTS</p>
             </div>
           </a>
           <div class="item-menu">
@@ -201,7 +203,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View Team.svg" alt="" width="20px" />
-              <p>TEAM</p>
+              <p  class="menu-text">TEAM</p>
             </div>
           </a>
           <div class="item-menu">
@@ -214,7 +216,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View Clients.svg" alt="" width="20px" />
-              <p>CLIENTS</p>
+              <p  class="menu-text">CLIENTS</p>
             </div>
           </a>
           <div class="item-menu">
@@ -227,7 +229,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View tags.svg" alt="" width="20px" />
-              <p>TAGS</p>
+              <p  class="menu-text">TAGS</p>
             </div>
           </a>
           <div class="item-menu">
@@ -240,7 +242,7 @@
           <a href="">
             <div class="icon-container">
               <img src="assets/View Settings.svg" alt="" width="20px" />
-              <p>SETTINGS</p>
+              <p  class="menu-text">SETTINGS</p>
             </div>
           </a>
           <div class="item-menu">
@@ -250,8 +252,10 @@
           </div>
         </div>
         <div class="side-nav__item" id="last-arrow">
-          <a>
-            <img src="assets/Up arrow symbol.svg" alt="" width="10px" />
+          <a href="">
+            <div class="icon-container">
+              <img src="assets/Up arrow symbol.svg" alt="" width="10px" />
+            </div>
           </a>
         </div>
         <div class="additional-items">
@@ -259,7 +263,8 @@
             <a href="">
               <div class="icon-container">
                 <img src="assets/View Kiosks.svg" alt="" width="20px" />
-                <p>KIOSKS</p>
+                <p  class="menu-text">KIOSKS</p>
+              </div>
             </a>
             <div class="item-menu">
               <div class="item-menu__text">
@@ -271,7 +276,7 @@
             <a href="">
               <div class="icon-container">
                 <img src="assets/View Schedule.svg" alt="" width="20px" />
-                <p>SCHEDULE</p>
+                <p class="menu-text">SCHEDULE</p>
               </div>
             </a>
             <div class="item-menu">
@@ -284,7 +289,7 @@
             <a href="">
               <div class="icon-container">
                 <img src="assets/View Expenses.svg" alt="" width="20px" />
-                <p>EXPENSES</p>
+                <p class="menu-text">EXPENSES</p>
               </div>
             </a>
             <div class="item-menu">
@@ -297,7 +302,7 @@
             <a href="">
               <div class="icon-container">
                 <img src="assets/View Time off.svg" alt="" width="20px" />
-                <p>TIME OFF</p>
+                <p class="menu-text">TIME OFF</p>
               </div>
             </a>
             <div class="item-menu">
@@ -308,14 +313,17 @@
           </div>
           <div class="side-nav__item">
             <a href="">
-              <img src="assets/View Activity.svg" alt="" width="20px" />
+              <div class="icon-container">
+                <img src="assets/View Activity.svg" alt="" width="20px" />
+                <p  class="menu-text">ACTIVITY</p>
+              </div>
             </a>
           </div>
           <div class="side-nav__item">
             <a href="">
               <div class="icon-container">
                 <img src="assets/View Approvals.svg" alt="" width="20px" />
-                <p>APPROVALS</p>
+                <p class="menu-text">APPROVALS</p>
               </div>
             </a>
             <div class="item-menu">
@@ -328,7 +336,7 @@
             <a href="">
               <div class="icon-container">
                 <img src="assets/invoices.png" alt="" width="20px" />
-                <p>INVOICES</p>
+                <p class="menu-text">INVOICES</p>
               </div>
             </a>
             <div class="item-menu">
@@ -340,7 +348,6 @@
         </div>
       </div>
     </div>
-  </div>
   <div class="feature-section">
     <div class="time-tracker">
       <div class="time-tracker__header">
@@ -366,10 +373,12 @@
         <div class="timer" id="timer">
           <p>00:00:00</p>
         </div>
+        <input type="date" id="manual-start-date" style="margin-left: -60px;">
 
         <div class="start-button">
-          <button>START</button>
+          <button id="startStopButton">START</button>
         </div>
+        
       </div>
 
       <div class="tracker-icons">
@@ -377,6 +386,42 @@
         <img src="assets/Add time manually selected.svg" width="15px" alt="" id="manual-menu" />
       </div>
     </div>
+
+      <div class="time-info" id="time-info"></div>
+
+
+
+    <!-- <div>
+      <select id="project__list"></select>
+  </div>
+  <div id="Timetracker__body"></div>
+  <div>
+      <button id="clearDataButton">Clear Data</button>
+  </div>
+  <div>
+      <button id="time__start">Start</button>
+      <span id="time__tracker">00:00:00</span>
+  </div>
+  <div>
+      <input type="text" id="Timetracker__description" placeholder="Add Description">
+      <input type="text" id="projectListInput" placeholder="Project Name">
+      <select id="weekDaysInput">
+          <option value="" disabled selected>Select Weekday</option>
+          <option value="monday">Monday</option>
+          <option value="tuesday">Tuesday</option>
+          <option value="wednesday">Wednesday</option>
+          <option value="thursday">Thursday</option>
+          <option value="friday">Friday</option>
+          <option value="saturday">Saturday</option>
+          <option value="sunday">Sunday</option>
+      </select>
+      <button id="addTimeTrackerButton">Add Time Tracker</button>
+  </div> -->
+
+  <!-- Include font-awesome CDN for trash icon -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+
     <div class="starting-box">
       <img src="assets/empty-tracker-icon.png" alt="" width="80px" />
       <h2>Let's start tracking!</h2>

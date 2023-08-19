@@ -71,8 +71,23 @@ document.addEventListener("DOMContentLoaded", () => {
     additionalItems.classList.toggle('expanded')
   })
 
-  const arrowMenu = document.querySelector('.item-menu')
-// const menuIcon = document.getElementById('menu-icon')
+  const menuIcon = document.getElementById("menu-icon");
+  const sideNav = document.querySelector(".side-nav");
+  const menuText = document.querySelector(".menu-text");
+  const itemMenu = document.querySelector('.item-menu');
+  
+  menuIcon.addEventListener("click", () => {
+    sideNav.classList.toggle("expanded");
+    lastArrow.classList.toggle("rotate-icon");
+    menuText.classList.toggle("active");
+    
+    if (sideNav.classList.contains("expanded")) {
+      itemMenu.style.display = "none";
+      itemMenu.style.visibility = 'hidden'
+    }
+  });
 });
+
+ 
 
 

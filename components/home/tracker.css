@@ -1,5 +1,5 @@
 .project-box input {
-    width: 64vw;
+    width: 58vw;
     height: 40px;
     margin: 8px;
     border: none;
@@ -63,7 +63,7 @@
 }
 
 .timer {
-    margin-left: -45px;
+    margin-left: -55px;
 }
 
 .timer p {
@@ -73,7 +73,7 @@
 .dollar {
     font-size: larger;
     color: gray;
-    margin-left: -40px;
+    margin-left: -50px;
 }
 
 .input-container {
