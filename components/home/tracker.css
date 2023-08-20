@@ -72,7 +72,7 @@
 
 .dollar {
     font-size: larger;
-    color: gray;
+    color: rgb(9, 173, 218);
     margin-left: -50px;
 }
 
@@ -107,4 +107,8 @@
 
 #manual-menu {
     filter: brightness(0) saturate(100%) invert(70%) sepia(0%) saturate(10%) hue-rotate(139deg) brightness(88%) contrast(85%);
+}
+
+.time-entry.project-sameproject{
+    background-color: red;
 }
