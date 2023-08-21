@@ -10,17 +10,18 @@
     margin-top: -1.8px;
 }
 
-.side-nav.expanded{
-    
+.side-nav.expanded {
+
     width: 10vw;
 }
 
-.icon-container{
+.icon-container {
     display: flex;
     gap: 10px;
     align-items: center;
     cursor: pointer;
     text-decoration: none;
+    background-color: transparent;
 }
 
 .side-nav__items {
@@ -30,8 +31,13 @@
     margin-left: -10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    border: none;  
+    border: none;
 }
+
+.side-nav__item:hover .icon-container {
+    z-index: 10;
+}
+
 
 .additional-items {
     position: relative;
@@ -40,7 +46,7 @@
     margin-top: 10px;
     display: none;
     border-left: 1px solid #47B1F4;
-    border-top: none; 
+    border-top: none;
 }
 
 .side-nav__item {
@@ -74,7 +80,7 @@
     transition: left 0.3s ease-in-out;
 }
 
-.menu-text{
+.menu-text {
     text-decoration: none;
     display: none;
     margin-left: 10px;
@@ -90,7 +96,7 @@
     background-color: transparent;
 }
 
- .item-menu{
+.item-menu {
     position: absolute;
     top: 0;
     left: 50px;
@@ -113,36 +119,37 @@
 
 .side-nav.expanded .menu-text,
 .side-nav.expanded .icon-container {
-  display: flex;
+    display: flex;
 }
 
-.side-nav.expanded .item-menu, .side-nav.expanded .dashboard-item {
+.side-nav.expanded .item-menu,
+.side-nav.expanded .dashboard-item {
     display: none;
     visibility: hidden;
-  }
-  
+}
 
-.dashboard-item{
+
+.dashboard-item {
     max-height: 1000px;
     margin-top: -120px;
     max-width: 500px;
     clip-path: polygon(4% 22%, 11% 19%, 11% 0, 81% 0, 83% 100%, 12% 100%, 12% 29%) !important
 }
 
-.item-menu__text{
+.item-menu__text {
 
- padding-top: 14px;
- padding-bottom: 20px;
- padding-left: 10px;
- padding-right: 10px;
- text-align: center;
+    padding-top: 14px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
 }
 
-.item-menu__text:hover{
+.item-menu__text:hover {
     background-color: #E5EAEF;
 }
 
-.item-text h5{
+.item-text h5 {
     color: black;
     font-weight: 300;
     text-align: start;
@@ -150,7 +157,7 @@
     font-size: 14px;
 }
 
-.item-text p{
+.item-text p {
     font-size: 14px;
     color: gray;
     line-height: 30px;
@@ -166,13 +173,13 @@
 .item-text p:hover {
     background-color: #E5EAEF;
 }
-.item-menu a{
+
+.item-menu a {
     text-decoration: none;
     color: gray;
 }
 
-.side-nav__item:hover .item-menu
-{   
+.side-nav__item:hover .item-menu {
     display: block;
     visibility: visible;
 }

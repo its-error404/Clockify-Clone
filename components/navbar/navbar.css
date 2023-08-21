@@ -39,13 +39,24 @@ button {
     position: relative;
 }
 
+.upgrade-div {
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 10px;
+}
+
 .upgrade__button:hover {
     background-color: #47B1F4;
     color: white;
     transition: all 0.3s;
 }
 
-.top-nav__right img {
+.help {
+    margin-left: -20px;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 10px;
+}
+
+.notifications .top-nav__right img {
     margin-right: 10px;
 }
 
@@ -124,7 +135,7 @@ button {
 
 .rotate-icon {
     transform: rotate(180deg);
-  }
+}
 
 
 .workspace-info {
@@ -239,10 +250,14 @@ button {
 .notifications {
     position: relative;
     display: inline-block;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    margin-left: -20px;
+    padding-right: 20px;
 }
 
 .profile {
     position: relative;
+    margin-left: -20px;
 }
 
 .notifications__button {

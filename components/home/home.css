@@ -6,13 +6,14 @@
     transition: margin-left 0.3s ease;
 }
 
-.feature-section.expanded{
+.feature-section.expanded {
     width: 90vw;
 }
 
-.home-container{
+.home-container {
     display: flex;
 }
+
 .starting-box {
 
     width: 330px;
