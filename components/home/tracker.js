@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const projectDescriptionInput = document.getElementById("project-description");
   const manualStartDateInput = document.getElementById("manual-start-date");
   const timeInfoContainer = document.getElementById("time-info");
+  const weekHeader = document.getElementById("week-date-range");
+  const calculateWeekTime = document.querySelector(".calculated-week-time");
 
   let timerInterval;
   let startTime;
@@ -37,10 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     resetTimer();
   };
 
-  const clearTime = () => {
-    timeInfoContainer.innerHTML = "";
-  };
-
   const updateTimer = () => {
     const currentTime = Date.now();
     const timeDifference = currentTime - startTime;
@@ -62,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const displayWeek = () => {
+    const weekHeader = document.getElementById("week-date-range");
     const weekStartDate = new Date(manualStartDateInput.value);
     const weekEndDate = new Date(weekStartDate);
     weekEndDate.setDate(weekStartDate.getDate() + 6);
@@ -69,88 +68,74 @@ document.addEventListener("DOMContentLoaded", () => {
     const formattedWeekStartDate = dateFormat(weekStartDate);
     const formattedWeekEndDate = dateFormat(weekEndDate);
 
-    const weekHeader = document.getElementById("week-date-range");
     weekHeader.textContent = `${formattedWeekStartDate} - ${formattedWeekEndDate}`;
   };
 
-  function displayTimeInfo() {
+  const displayTimeInfo = () => {
     const trackedTime = timerDisplay.textContent;
     const projectDescription = projectDescriptionInput.value;
     const startDate = manualStartDateInput.value;
-    const currentDate = new Date().toLocaleDateString();
 
-    const timeInfoContent = `
-    <div class='week-header'>
-        <p id='week-date-range'></p>
-        <p class='week-total'>Week total: <span class=calculated-week-time>${trackedTime}</span></p>
-    </div>
+    const newTimeEntry = document.createElement("div");
+    newTimeEntry.classList.add("time-entry");
+    newTimeEntry.innerHTML = `
+      <div class='week-header'>
+          <p id='week-date-range'></p>
+          <p class='week-total'>Week total: <span class=calculated-week-time>${trackedTime}</span></p>
+      </div>
 
-    <div class="tracked-time">
-        <div class="date-container">
-            <p class='startDate'>${startDate}</p>
-                 <div class='total-word'>
-                    <p>Time: <span class=calculated-time>${trackedTime}</span></p>
-                    <img src='/assets/Bulk edit items.svg' width='20px'>
-                 </div>
-        </div>
-        <div class='project-details'>
-            <div class='project-info'>
-                <p>${projectDescription}</p>
-            </div>
-            <div class='project-details__other-features'>
-                <p><strong>Start Date:</strong>&nbsp;${startDate}</p>
-                <img src='/assets/View tags.svg' width='20px'>
-                <h3>$</h3>
-                <p id='date'><strong>Current Date:</strong> ${currentDate}</p>
-                <input type="date" id="manual-start-date">
-                <p><strong>Time:</strong> ${trackedTime}</p>
-                <img src='/assets/Start button.svg' width='20px' id='continue-button'>
-                <img src='/assets/Edit menu dark theme.svg' width='5px' class='edit-options'>
-                    <div class='edit-dropdown'>
-                        <div class='duplicate-item'>
-                            <p>Duplicate</p>
-                        </div>
-                        <div class='delete-item'>
-                            <p>Delete</p>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
-`;
+      <div class="tracked-time">
+          <div class="date-container">
+              <p class='startDate'>${startDate}</p>
+                   <div class='total-word'>
+                      <p>Time: <span class=calculated-time>${trackedTime}</span></p>
+                      <img src='/assets/Bulk edit items.svg' width='20px'>
+                   </div>
+          </div>
+          <div class='project-details'>
+              <div class='project-info'>
+                  <p>${projectDescription}</p>
+              </div>
+              <div class='project-details__other-features'>
+                  <p><strong>Start Date:</strong>&nbsp;${startDate}</p>
+                  <img src='/assets/View tags.svg' width='20px'>
+                  <h3>$</h3>
+                  <input type="date" id="manual-start-date">
+                  <p><strong>Time:</strong> ${trackedTime}</p>
+                  <img src='/assets/Start button.svg' width='20px' id='continue-button'>
+                  <img src='/assets/Edit menu dark theme.svg' width='5px' class='edit-options'>
+                  <div class='edit-dropdown'>
+                      <div class='duplicate-item'>
+                          <p>Duplicate</p>
+                      </div>
+                      <div class='delete-item'>
+                          <p>Delete</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    `;
 
-const sameEntry = findSameProjects(projectDescription);
-    if (!sameEntry) {
-      const newTimeEntry = document.createElement("div");
-      newTimeEntry.classList.add("time-entry");
-      newTimeEntry.classList.add("project-" + projectDescription);
-      newTimeEntry.innerHTML = timeInfoContent;
-      timeInfoContainer.appendChild(newTimeEntry);
-    } else {
-      const projectDetails = sameEntry.querySelector(".project-details__other-features");
-      const newEntry = document.createElement("div");
-      newEntry.classList.add("time-entry");
-      newEntry.innerHTML = timeInfoContent;
-      projectDetails.appendChild(newEntry);
-    }
+    timeInfoContainer.appendChild(newTimeEntry);
 
-  const projectEntries = document.querySelectorAll(`.project-${projectDescriptionInput}`);
+    const projectEntries = document.querySelectorAll(`.project-${projectDescription}`);
 
-  if (projectEntries.length > 1) {
-    const projectInfo = newTimeEntry.querySelector(".project-info");
-    const toggleButton = document.createElement("button");
-    toggleButton.textContent = `Show all ${projectEntries.length} projects`;
-    toggleButton.classList.add("toggle-button");
-    projectInfo.appendChild(toggleButton);
+    if (projectEntries.length > 1) {
+      const projectInfo = newTimeEntry.querySelector(".project-info");
+      const toggleButton = document.createElement("button");
+      toggleButton.textContent = `Show all ${projectEntries.length} projects`;
+      toggleButton.classList.add("toggle-button");
+      projectInfo.appendChild(toggleButton);
 
-    toggleButton.addEventListener("click", () => {
-      projectEntries.forEach((entry) => {
-        if (entry != newTimeEntry) {
-          entry.classList.toggle("project-hidden");
-        }
+      toggleButton.addEventListener("click", () => {
+        projectEntries.forEach((entry) => {
+          if (entry != newTimeEntry) {
+            entry.classList.toggle("project-hidden");
+          }
+        });
       });
-    });
-  }
+    }
 
     const totalTrackedTime = calculateTotalTime(projectDescription);
     projectEntries.forEach((entry) => {
@@ -158,31 +143,12 @@ const sameEntry = findSameProjects(projectDescription);
       totalTrackedTimeElement.textContent = formatTime(totalTrackedTime);
     });
 
+
     const totalWeekTime = calculateTotalWeekTime();
-    formattedWeekTime = formatTime(totalWeekTime);
-    const calculatedWeekTime = document.querySelector(".calculated-week-time");
-    calculateTotalWeekTime.textContent = formattedWeekTime;
+    calculateWeekTime.textContent = formatTime(totalWeekTime);
 
-    const calculateTotalWeekTime = () => {
-      const allTrackedTimes = document.querySelector(".time-entry");
-      let totalMilliseconds = 0;
-
-      allTrackedTimes.forEach((time) => {
-        const trackedTimeElement = time.querySelector(".calculated-time");
-        const trackedTimeParts = trackedTimeElement.textContent.split(":");
-        const hours = parseInt(trackedTimeParts[0]);
-        const minutes = parseInt(trackedTimeParts[1]);
-        const seconds = parseInt(trackedTimeParts[2]);
-
-        totalMilliseconds =
-          totalMilliseconds + (hours * 3600 + minutes * 60 + seconds) * 1000;
-      });
-
-      return totalMilliseconds;
-    };
-
-    const editOptions = document.querySelector(".edit-options");
-    const editDropdown = document.querySelector(".edit-dropdown");
+    const editOptions = newTimeEntry.querySelector(".edit-options");
+    const editDropdown = newTimeEntry.querySelector(".edit-dropdown");
 
     editOptions.addEventListener("click", (e) => {
       editDropdown.classList.toggle("visible");
@@ -205,13 +171,9 @@ const sameEntry = findSameProjects(projectDescription);
     } else {
       dateElement.textContent = formattedDate;
     }
-  }
-  function sanitizeClassName(className) {
-    return className.replace(/\s+/g, '-').toLowerCase();
-  }
+  };
 
-
-  function findSameProjects(projectDescription) {
+  const findSameProjects = (projectDescription) => {
     const sameEntries = document.querySelectorAll(
       `.project-${sanitizeClassName(projectDescription)}`
     );
@@ -220,13 +182,10 @@ const sameEntry = findSameProjects(projectDescription);
     } else {
       return null;
     }
-  }
+  };
 
-
-  function calculateTotalTime(projectDescription) {
-    const entriesWithSameProject = document.querySelectorAll(
-      `.project-${projectDescription}`
-    );
+  const calculateTotalTime = (projectDescription) => {
+    const entriesWithSameProject = document.querySelectorAll(`.project-${projectDescription}`);
     let totalMilliseconds = 0;
 
     entriesWithSameProject.forEach((entry) => {
@@ -235,14 +194,31 @@ const sameEntry = findSameProjects(projectDescription);
       const hours = parseInt(trackedTimeParts[0]);
       const minutes = parseInt(trackedTimeParts[1]);
       const seconds = parseInt(trackedTimeParts[2]);
-      totalMilliseconds =
-        totalMilliseconds(hours * 3600 + minutes * 60 + seconds) * 1000;
+      totalMilliseconds = totalMilliseconds + (hours * 3600 + minutes * 60 + seconds) * 1000;
+    });
+    return totalMilliseconds;
+  };
+
+  const calculateTotalWeekTime = () => {
+    const allTrackedTimes = document.querySelectorAll(".time-entry");
+    let totalMilliseconds = 0;
+
+    allTrackedTimes.forEach((time) => {
+      const trackedTimeElement = time.querySelector(".calculated-time");
+      const trackedTimeParts = trackedTimeElement.textContent.split(":");
+      const hours = parseInt(trackedTimeParts[0]);
+      const minutes = parseInt(trackedTimeParts[1]);
+      const seconds = parseInt(trackedTimeParts[2]);
+
+      totalMilliseconds = totalMilliseconds + (hours * 3600 + minutes * 60 + seconds) * 1000;
     });
 
     return totalMilliseconds;
-  }
+  };
 
   function resetTimer() {
     timerDisplay.textContent = "00:00:00";
   }
 });
+
+  

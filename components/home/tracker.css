@@ -67,13 +67,16 @@
 }
 
 .timer p {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .dollar {
     font-size: larger;
-    color: rgb(9, 173, 218);
-    margin-left: -50px;
+    margin-left: -60px;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 20px;
+    font-weight: 100;
+    color: rgb(192, 186, 186);
 }
 
 .input-container {
@@ -81,11 +84,14 @@
 }
 
 .tags {
-    margin-left: 15px;
+    border-left: 1px rgb(223, 214, 214) dotted;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .start-button {
-    margin-left: -40px;
+    margin-left: -60px;
 }
 
 .start-button button {
@@ -111,4 +117,10 @@
 
 .time-entry.project-sameproject{
     background-color: red;
+}
+
+.calculated-time{
+    font-size: 16px;
+    color: black;
+    font-weight: 500;
 }
