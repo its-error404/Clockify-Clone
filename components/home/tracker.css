@@ -1,137 +1,110 @@
-.feature-section{
-   width: 92vw;
-   margin-left: 100px;
+.project-box input {
+    width: 58vw;
+    height: 40px;
+    margin: 8px;
+    border: none;
+    background-color: white;
+    transition: border 0.3s ease;
+    text-indent: 10px;
 }
 
-.add-project{
+.project-box input:hover,
+.project-box input:focus {
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.project-box {
+    background-color: white;
+    width: 100%;
+}
+
+
+.add-project {
     display: flex;
     gap: 10px;
     color: #5EBCF7;
+    
+}
+.add-project:hover{
+    text-decoration: underline;
 }
 
-.time-tracker{
+.add-project p {
+    margin-top: 18px;
+}
+
+.time-tracker {
     display: flex;
+    flex-flow: row nowrap;
     gap: 30px;
-    border: 1px solid rgb(152, 147, 147);
     height: 60px;
-    margin-top: 35px;
-    margin-left: -10px;
+    margin: 2.5rem 1.2rem 0rem;
     background-color: white;
+    box-shadow: 0 .5rem 1rem #00000026;
+    width: 93vw;
+    padding: 0.7rem 0rem;
+    align-items: center;
 }
 
-.time-tracker__header{
+.time-tracker__header {
     display: flex;
     gap: 20px;
     background-color: white;
+    
 }
 
-.other-features{
+.other-features {
     display: flex;
-    margin-top: 18px;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
     gap: 80px;
 }
-.timer{
-    margin-left: -45px;
+
+.timer {
+    margin-left: -55px;
 }
-.timer p{
+
+.timer p {
     font-size: 20px;
 }
-.add-project{
-    display: flex;
-}
 
-.add-project p{
-    margin-top: 18px;
-}
-
-.project-info input{
-    width: 1250px;
-    height: 40px;
-    margin: 8px;
-    border: 1px gray solid;
-    background-color: white;
-}
-
-.project-info{
-    background-color: white;
-}
-
-
-.from-time input{
-    width: 40px;
-    height: 40px;
-}
-
-.to-time input{
-    width: 40px;
-    height: 40px;
-}
-
-.calender{
-    margin-left: -20px;
-}
-
-.calendar-hidden {
-    display: inline-flex;
-    margin-left: 10px;
-}
-
-.times{
-    margin-top: -10px;
-    display: inline-flex;
-    gap: 10px;
-    margin-left: -20px;
-}
-
-.dollar{
+.dollar {
     font-size: larger;
     color: gray;
-    margin-left: -40px;
-    margin-top: -3px;
-}
-
-.timer-container {
-    text-align: center;
-    margin-top: 20px;
+    margin-left: -50px;
 }
 
 .input-container {
     margin-bottom: 10px;
 }
 
-.timers {
-    text-align: left;
-    padding: 10px;
-    border: 1px solid #ccc;
-    max-width: 300px;
-    margin: 0 auto;
+.tags {
+    margin-left: 15px;
 }
 
-   .total-time-box {
-        margin-top: -10px;
-        padding-left: 30px;
-        margin-bottom: 8px;
-        padding-right: 30px;
-        background-color: #f2f2f2;
-        border: 1px solid #ccc;
-        display: inline-block;
-    }
+.start-button {
+    margin-left: -40px;
+}
 
-    .tags{
-        margin-left: 15px;
-    }
+.start-button button {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 28px;
+    padding-right: 28px;
+    background-color: #3FAAF5;
+    color: white;
+    border: none;
+}
 
-    .start-button{
-        margin-left: -40px;
-        margin-top: -8px;
-    }
+.tracker-icons {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
 
-    .start-button button{
-        padding-top: 12px;
-        padding-bottom: 12px;
-        padding-left: 28px;
-        padding-right: 28px;
-        background-color: #3FAAF5;
-        color: white;
-        border: none;
-    }
+
+#manual-menu {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(0%) saturate(10%) hue-rotate(139deg) brightness(88%) contrast(85%);
+}
