@@ -86,24 +86,6 @@ button {
     position: relative;
 }
 
-/*  TODO: Upgrade button implementation, line
-
-
- .upgrade__button::after
-{
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 500px;
-    width: 30px;
-    height: 0.5px;
-    transform: rotate(90deg);
-    background-color: #cdc8c8;
-    margin-left: 15px;
-} 
-
-*/
-
 .user-workspace__button::after {
     margin-left: 10px;
     content: '\25BE';
