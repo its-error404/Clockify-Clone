@@ -58,6 +58,30 @@ document.addEventListener("DOMContentLoaded", () => {
     weekTotalSpan.textContent = formatTime(weekTotalTime * 1000);
   };
 
+  const addEventListenersToEntry = (entry) => {
+    const editOptions = entry.querySelector(".edit-options");
+    const editDropdown = entry.querySelector(".edit-dropdown");
+
+    const toggleDropdown = () => {
+      editDropdown.classList.toggle("visible");
+    };
+
+    editOptions.addEventListener("click", (e) => {
+      toggleDropdown();
+      e.stopPropagation();
+    });
+
+    const closeDropdown = () => {
+      editDropdown.classList.remove("visible");
+    };
+
+    document.addEventListener("click", (e) => {
+      if (!editOptions.contains(e.target) && !editDropdown.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+  };
+
   const displayTimeInfo = () => {
     const trackedTime = timerDisplay.innerHTML;
     const projectDescription = projectDescriptionInput.value;
@@ -79,42 +103,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const newTimeEntry = document.createElement("div");
     newTimeEntry.classList.add("time-entry");
     newTimeEntry.innerHTML = `
-
-      <div class="tracked-time">
-          <div class="date-container">
-              <p class='startDate'>${startDateString}</p>
-                   <div class='total-word'>
-                      <p>Time: &ensp; <span class=calculated-time>${trackedTime}</span></p>
-                      <img src='/assets/Bulk edit items.svg' width='20px'>
-                   </div>
-          </div>
-          <div class='project-details'>
-              <div class='project-info'>
-                  <p>.</p>
-                  <p>${projectDescription}</p>
-              </div>
-              <div class='project-details__other-features'>
-                <div class='tags'>
-                  <img src='/assets/View tags.svg' width='20px'>
+    <div class="tracked-time">
+    <div class="date-container">
+        <p class='startDate'>${startDateString}</p>
+             <div class='total-word'>
+                <p>Time: &ensp; <span class=calculated-time>${trackedTime}</span></p>
+                <img src='/assets/Bulk edit items.svg' width='20px'>
+             </div>
+    </div>
+    <div class='project-details'>
+        <div class='project-info'>
+            <p>.</p>
+            <p>${projectDescription}</p>
+        </div>
+        <div class='project-details__other-features'>
+            <div class='tags'>
+              <img src='/assets/View tags.svg' width='20px'>
+            </div>
+            <div class='currency'>
+              <h3>$</h3>
+            </div>
+            <input type='date' id='duplicate-input'>
+            <p><strong>Time:</strong> ${trackedTime}</p>
+            <img src='/assets/Start button.svg' width='20px' id='continue-button'>
+            <img src='/assets/Edit menu dark theme.svg' width='5px' class='edit-options'>
+            <div class='edit-dropdown'>
+                <div class='duplicate-item'>
+                    <p>Duplicate</p>
                 </div>
-                <div class='currency'>
-                  <h3>$</h3>
+                <div class='delete-item'>
+                    <p>Delete</p>
                 </div>
-                  <p><strong>Time:</strong> ${trackedTime}</p>
-                  <img src='/assets/Start button.svg' width='20px' id='continue-button'>
-                  <img src='/assets/Edit menu dark theme.svg' width='5px' class='edit-options'>
-                  <div class='edit-dropdown'>
-                      <div class='duplicate-item'>
-                          <p>Duplicate</p>
-                      </div>
-                      <div class='delete-item'>
-                          <p>Delete</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-    `;
+            </div>
+        </div>
+    </div>
+</div>
+`;
 
     timeInfoContainer.appendChild(newTimeEntry);
 
@@ -122,86 +146,68 @@ document.addEventListener("DOMContentLoaded", () => {
       weekEntries[weekStartDateString] = document.createElement("div");
       weekEntries[weekStartDateString].classList.add("week-entry");
       weekEntries[weekStartDateString].innerHTML = `
-        <div class='week-header'>
+      <div class='week-header'>
           <p id='week-date-range'>${weekStartDateString} - ${weekEndDateString}</p>
           <p class='week-total'>Week total: <span class='calculated-week-time'>00:00:00</span></p>
-        </div>
+      </div>
       `;
       timeInfoContainer.appendChild(weekEntries[weekStartDateString]);
     }
 
     weekEntries[weekStartDateString].appendChild(newTimeEntry);
 
-    const editOptions = newTimeEntry.querySelector(".edit-options");
-    const editDropdown = newTimeEntry.querySelector(".edit-dropdown");
+    addEventListenersToEntry(newTimeEntry);
 
-    editOptions.addEventListener("click", (e) => {
-      editDropdown.classList.toggle("visible");
-      e.stopPropagation();
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!editDropdown.contains(e.target)) {
-        editDropdown.classList.remove("visible");
-      }
-    });
-
-    const duplicateButton = document.querySelectorAll(".duplicate-item");
+    const duplicateButton = newTimeEntry.querySelectorAll(".duplicate-item");
     for (let i = 0; i < duplicateButton.length; i++) {
       duplicateButton[i].addEventListener("click", () => {
         const duplicateEntry = newTimeEntry.cloneNode(true);
 
-        const duplicateEntryTime =
-          duplicateEntry.querySelector(".calculated-time");
-        const duplicateEntryTimeParts = duplicateEntryTime.textContent.split(":");
-        const duplicateEntryHours = parseInt(duplicateEntryTimeParts[0]);
-        const duplicateEntryMinutes = parseInt(duplicateEntryTimeParts[1]);
-        const duplicateEntrySeconds = parseInt(duplicateEntryTimeParts[2]);
-        const duplicateEntryMilliseconds = (duplicateEntryHours * 3600 + duplicateEntryMinutes * 60 + duplicateEntrySeconds) * 1000; 
-        takenTime += duplicateEntryMilliseconds;
+        const duplicateDeleteButton =
+          duplicateEntry.querySelector(".delete-item");
+        duplicateDeleteButton.addEventListener("click", () => {
+          duplicateEntry.remove();
+        });
 
-        duplicateEntryTime.textContent = formatTime(duplicateEntryMilliseconds);
-
-        newTimeEntry.parentNode.insertBefore(duplicateEntry,newTimeEntry.nextSibling);
-
+        timeInfoContainer.appendChild(duplicateEntry);
         updateWeekTotal(weekStartDateString);
 
         const duplicateEditOptions =
           duplicateEntry.querySelector(".edit-options");
-        const duplicatedEditDropdown =
+        const duplicateEditDropdown =
           duplicateEntry.querySelector(".edit-dropdown");
 
         duplicateEditOptions.addEventListener("click", (e) => {
-          duplicatedEditDropdown.classList.toggle("visible");
+          duplicateEditDropdown.classList.toggle("visible");
           e.stopPropagation();
         });
 
         document.addEventListener("click", (e) => {
-          if (!duplicatedEditDropdown.contains(e.target)) {
-            duplicatedEditDropdown.classList.remove("visible");
+          if (
+            !duplicateEditOptions.contains(e.target) &&
+            !duplicateEditDropdown.contains(e.target)
+          ) {
+            duplicateEditDropdown.classList.remove("visible");
           }
         });
       });
     }
+
     updateWeekTotal(weekStartDateString);
 
     const deleteButton = newTimeEntry.querySelector(".delete-item");
     deleteButton.addEventListener("click", () => {
-      const trackedTimeSpan = newTimeEntry.querySelector(".calculated-time");
-      const trackedTimeParts = trackedTimeSpan.textContent.split(":");
-      const trackedHours = parseInt(trackedTimeParts[0]);
-      const trackedMinutes = parseInt(trackedTimeParts[1]);
-      const trackedSeconds = parseInt(trackedTimeParts[2]);
-      const trackedMilliseconds =
-        (trackedHours * 3600 + trackedMinutes * 60 + trackedSeconds) * 1000;
-
-      takenTime -= trackedMilliseconds;
-
-      const weekEntry = newTimeEntry.closest(".week-entry");
-      weekEntry.removeChild(newTimeEntry);
-
+      newTimeEntry.remove();
       updateWeekTotal(weekStartDateString);
+
+      const weekEntry = weekEntries[weekStartDateString];
+      const timeEntriesInWeek = weekEntry.querySelectorAll(".time-entry");
+      if (timeEntriesInWeek.length === 0) {
+        weekEntry.remove();
+      }
     });
+
+    updateWeekTotal(weekStartDateString);
   };
 
   const resetTimer = () => {

@@ -115,11 +115,6 @@ button {
     display: block;
 }
 
-.rotate-icon {
-    transform: rotate(180deg);
-}
-
-
 .workspace-info {
     display: flex;
     align-items: center;
