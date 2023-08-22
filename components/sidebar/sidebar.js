@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
         menuIcon.classList.toggle("rotate-icon");
       sideNav.classList.toggle("expanded");
       menuText.classList.toggle("active");
+
+      itemMenu.classList.toggle('.disable-hover')
       if (sideNav.classList.contains("expanded")) {
         itemMenu.style.display = "none";
         itemMenu.style.visibility = "hidden";

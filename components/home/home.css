@@ -10,9 +10,10 @@
     width: 90vw;
 }
 
-.home-container{
+.home-container {
     display: flex;
 }
+
 .starting-box {
 
     width: 330px;

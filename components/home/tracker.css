@@ -24,9 +24,10 @@
     display: flex;
     gap: 10px;
     color: #5EBCF7;
-    
+
 }
-.add-project:hover{
+
+.add-project:hover {
     text-decoration: underline;
 }
 
@@ -39,7 +40,7 @@
     flex-flow: row nowrap;
     gap: 30px;
     height: 60px;
-    margin: 2.5rem 1.2rem 0rem;
+    margin: 2.5rem 1.5rem 3rem;
     background-color: white;
     box-shadow: 0 .5rem 1rem #00000026;
     width: 93vw;
@@ -51,7 +52,7 @@
     display: flex;
     gap: 20px;
     background-color: white;
-    
+
 }
 
 .other-features {
@@ -67,13 +68,21 @@
 }
 
 .timer p {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .dollar {
     font-size: larger;
-    color: gray;
-    margin-left: -50px;
+    margin-left: -60px;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 20px;
+    font-weight: 100;
+    color: rgb(192, 186, 186);
+}
+
+.currency {
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 20px;
 }
 
 .input-container {
@@ -81,11 +90,14 @@
 }
 
 .tags {
-    margin-left: 15px;
+    border-left: 1px rgb(223, 214, 214) dotted;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .start-button {
-    margin-left: -40px;
+    margin-left: -60px;
 }
 
 .start-button button {
@@ -107,4 +119,23 @@
 
 #manual-menu {
     filter: brightness(0) saturate(100%) invert(70%) sepia(0%) saturate(10%) hue-rotate(139deg) brightness(88%) contrast(85%);
+}
+
+.project-info {
+    display: flex;
+    gap: 10px;
+}
+
+.project-info p {
+    text-decoration: none;
+}
+
+.time-entry.project-sameproject {
+    background-color: red;
+}
+
+.calculated-time {
+    font-size: 16px;
+    color: black;
+    font-weight: 500;
 }
