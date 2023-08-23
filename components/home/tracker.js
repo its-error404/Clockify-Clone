@@ -31,11 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     timerDisplay.innerHTML = formattedTime;
   };
 
+  //converts milliseconds time to hours:minutes:seconds
   function formatTime(milliseconds) {
     const time = new Date(milliseconds);
     const hours = time.getUTCHours().toString().padStart(2, "0");
     const minutes = time.getUTCMinutes().toString().padStart(2, "0");
     const seconds = time.getUTCSeconds().toString().padStart(2, "0");
+    // console.log(time.getUTCSeconds().toString().padStart(2,'0'))
     return `${hours}:${minutes}:${seconds}`;
   }
 
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updateWeekTotal = (weekStartDateString) => {
     const weekEntry = weekEntries[weekStartDateString];
-    const weekTotalSpan = weekEntry.querySelector(".calculated-week-time");
+    const weekTotal = weekEntry.querySelector(".calculated-week-time");
     let weekTotalTime = 0;
 
     const trackedTimeSpans = weekEntry.querySelectorAll(".calculated-time");
@@ -52,11 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const hours = parseInt(timeParts[0]);
       const minutes = parseInt(timeParts[1]);
       const seconds = parseInt(timeParts[2]);
-      weekTotalTime += hours * 3600 + minutes * 60 + seconds;
-    });
-
-    weekTotalSpan.textContent = formatTime(weekTotalTime * 1000);
-  };
+      // console.log(timeParts[2])
+      // console.log(seconds)
+      weekTotalTime = weekTotalTime + (hours * 3600) + (minutes * 60) + seconds;
+    });                                  //convert from milliseconds to seconds
+    weekTotal.textContent = formatTime(weekTotalTime * 1000);
+  };                                    
 
   const displayTimeInfo = () => {
     const trackedTime = timerDisplay.innerHTML;
@@ -150,40 +153,94 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < duplicateButton.length; i++) {
       duplicateButton[i].addEventListener("click", () => {
         const duplicateEntry = newTimeEntry.cloneNode(true);
+   
+  const newDateInput = document.createElement("input");
+  newDateInput.type = "date";
+  newDateInput.placeholder = "Enter new date";
+  duplicateEntry.querySelector(".date-container").appendChild(newDateInput);
 
-        const duplicateEntryTime =
-          duplicateEntry.querySelector(".calculated-time");
-        const duplicateEntryTimeParts = duplicateEntryTime.textContent.split(":");
-        const duplicateEntryHours = parseInt(duplicateEntryTimeParts[0]);
-        const duplicateEntryMinutes = parseInt(duplicateEntryTimeParts[1]);
-        const duplicateEntrySeconds = parseInt(duplicateEntryTimeParts[2]);
-        const duplicateEntryMilliseconds = (duplicateEntryHours * 3600 + duplicateEntryMinutes * 60 + duplicateEntrySeconds) * 1000; 
-        takenTime += duplicateEntryMilliseconds;
+  var parentContainer = newTimeEntry.parentNode;
+  parentContainer.appendChild(duplicateEntry);
 
-        duplicateEntryTime.textContent = formatTime(duplicateEntryMilliseconds);
+  newDateInput.addEventListener("change", (e) => {
+      const newDate = e.target.value;
+      duplicateEntry.querySelector(".startDate").textContent = newDate;
+  });
 
-        newTimeEntry.parentNode.insertBefore(duplicateEntry,newTimeEntry.nextSibling);
+  const duplicateEditOptions = duplicateEntry.querySelector(".edit-options");
+  console.log(duplicateEditOptions)
+  const duplicatedEditDropdown = duplicateEntry.querySelector(".edit-dropdown");
+  console.log(duplicatedEditDropdown)
 
+  duplicateEditOptions.addEventListener("click", (e) => {
+    duplicatedEditDropdown.classList.toggle("visible");
+    e.stopPropagation();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!duplicatedEditDropdown.contains(e.target)) {
+      duplicatedEditDropdown.classList.remove("visible");
+    }
+  });
+
+  // Inside the 'duplicateButton' event listener
+duplicateButton[i].addEventListener("click", () => {
+  const duplicateEntry = newTimeEntry.cloneNode(true);
+
+  // ... (input field and other code)
+
+  // Now, select the duplicate button within the duplicated entry
+  const duplicateButtonInsideEntry = duplicateEntry.querySelector(".duplicate-item");
+
+  // Add an event listener to the duplicate button inside the duplicated entry
+  duplicateButtonInsideEntry.addEventListener("click", () => {
+      // Duplicating process similar to what you already have
+      const newDuplicateEntry = duplicateEntry.cloneNode(true);
+
+      // ... (updating date based on input)
+
+      parentContainer.appendChild(newDuplicateEntry);
+
+      // Add the class and event listener again for the newly duplicated entry
+      const newDuplicateButton = newDuplicateEntry.querySelector(".duplicate-item");
+      newDuplicateButton.addEventListener("click", () => {
+          // Duplicating process for the newly duplicated entry
+          // ...
+      });
+
+      // ...
+  });
+
+  // Rest of your code
+  updateWeekTotal(weekStartDateString);
+  // ...
+});
+
+  updateWeekTotal(weekStartDateString);
+});
+
+        
+        // const duplicateEntryTime = duplicateEntry.querySelector(".calculated-time");
+        // console.log(duplicateEntryTime)
+        // const duplicateEntryTimeParts = duplicateEntryTime.textContent.split(":");
+        // const duplicateEntryHours = parseInt(duplicateEntryTimeParts[0]);
+        // const duplicateEntryMinutes = parseInt(duplicateEntryTimeParts[1]);
+        // const duplicateEntrySeconds = parseInt(duplicateEntryTimeParts[2]);
+        // const duplicateEntryMilliseconds = ((duplicateEntryHours * 3600) + (duplicateEntryMinutes * 60) + (duplicateEntrySeconds)) * 1000; 
+        // takenTime += duplicateEntryMilliseconds;
+
+        // duplicateEntryTime.textContent = formatTime(duplicateEntryMilliseconds);
+
+        var parentContainer = newTimeEntry.parentNode
+        parentContainer.appendChild(duplicateEntry)
+        
         updateWeekTotal(weekStartDateString);
 
-        const duplicateEditOptions =
-          duplicateEntry.querySelector(".edit-options");
-        const duplicatedEditDropdown =
-          duplicateEntry.querySelector(".edit-dropdown");
-
-        duplicateEditOptions.addEventListener("click", (e) => {
-          duplicatedEditDropdown.classList.toggle("visible");
-          e.stopPropagation();
-        });
-
-        document.addEventListener("click", (e) => {
-          if (!duplicatedEditDropdown.contains(e.target)) {
-            duplicatedEditDropdown.classList.remove("visible");
-          }
-        });
-      });
-    }
-    updateWeekTotal(weekStartDateString);
+ 
+        updateWeekTotal(weekStartDateString);
+      }
+    
+    
 
     const deleteButton = newTimeEntry.querySelector(".delete-item");
     deleteButton.addEventListener("click", () => {

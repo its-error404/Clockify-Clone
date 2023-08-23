@@ -31,6 +31,10 @@
     text-decoration: underline;
 }
 
+#week-date-range{
+    padding-left: 10px;
+}
+
 .add-project p {
     margin-top: 18px;
 }

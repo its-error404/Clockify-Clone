@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Duplicate DOM Elements</title>
+</head>
+<body>
+    <div id="original">Original Element <button class="duplicateButton">Duplicate</button></div>
+    <script>
+        const container = document.body;
+
+        container.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('duplicateButton')) {
+                const originalElement = target.parentNode;
+                const clone = originalElement.cloneNode(true);
+                const duplicateButton = clone.querySelector('.duplicateButton');
+                
+                // duplicateButton.remove(); // Remove the button from the clone
+
+                originalElement.parentNode.appendChild(clone);
+            }
+        });
+    </script>
+</body>
+</html>
