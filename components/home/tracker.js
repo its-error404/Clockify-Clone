@@ -92,9 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const endOfWeek = new Date(startDateObject);
 
     startOfWeek.setDate(startDateObject.getDate() - startDateObject.getDay());
-    endOfWeek.setDate(
-      startDateObject.getDate() + (6 - startDateObject.getDay())
-    );
+    endOfWeek.setDate(startDateObject.getDate() + (6 - startDateObject.getDay()));
 
     const weekStartDateString = startOfWeek.toUTCString().substring(0, 11);
     const weekEndDateString = endOfWeek.toUTCString().substring(0, 11);
@@ -114,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class='project-details'>
         <div class='project-info'>
             <p>.</p>
-            <p>${projectDescription}</p>
+            <p contenteditable='true'>${projectDescription}</p>
         </div>
         <div class='project-details__other-features'>
             <div class='tags'>
@@ -163,19 +161,31 @@ document.addEventListener("DOMContentLoaded", () => {
       duplicateButton[i].addEventListener("click", () => {
         const duplicateEntry = newTimeEntry.cloneNode(true);
 
-        const duplicateDeleteButton =
-          duplicateEntry.querySelector(".delete-item");
+        const duplicateDeleteButton = duplicateEntry.querySelector(".delete-item");
         duplicateDeleteButton.addEventListener("click", () => {
-          duplicateEntry.remove();
+        duplicateEntry.remove();
         });
 
-        timeInfoContainer.appendChild(duplicateEntry);
-        updateWeekTotal(weekStartDateString);
+        const duplicateProjectDescription = duplicateEntry.querySelector('.project-info p');
+      
 
-        const duplicateEditOptions =
-          duplicateEntry.querySelector(".edit-options");
-        const duplicateEditDropdown =
-          duplicateEntry.querySelector(".edit-dropdown");
+      duplicateProjectDescription.addEventListener('input', (event) => {
+        const newDescription = event.target.textContent;
+        duplicateProjectDescription.textContent = newDescription;
+        projectDescriptionInput.value = newDescription;
+      });
+
+        const newWeekStartDateString = duplicateEntry.querySelector('.startDate').textContent
+
+        duplicateEntry.querySelector('.startDate').textContent = newWeekStartDateString
+
+        const weekEntry = weekEntries[newWeekStartDateString];
+        weekEntry.appendChild(duplicateEntry);
+
+        updateWeekTotal(newWeekStartDateString);
+
+        const duplicateEditOptions = duplicateEntry.querySelector(".edit-options");
+        const duplicateEditDropdown = duplicateEntry.querySelector(".edit-dropdown");
 
         duplicateEditOptions.addEventListener("click", (e) => {
           duplicateEditDropdown.classList.toggle("visible");
@@ -227,4 +237,31 @@ document.addEventListener("DOMContentLoaded", () => {
       stopTimer();
     }
   });
+
+  const duplicateInput = document.getElementById('duplicate-input');
+  duplicateInput.addEventListener('change', () => {
+  const newDate = duplicateInput.value;
+  const newStartDateObject = new Date(newDate);
+  const newStartDateString = newStartDateObject.toUTCString().substring(0, 11);
+
+  const startDateElements = document.querySelectorAll('.startDate');
+  startDateElements.forEach(startDateElement => {
+    startDateElement.textContent = newStartDateString;
+  });
+
+  const duplicatedProjectDescriptions = document.querySelectorAll('.project-info p');
+  duplicatedProjectDescriptions.forEach(duplicatedDescription => {
+    duplicatedDescription.textContent = projectDescription; 
+  });
+
+  const weekStartDateString = newStartDateObject.toLocaleDateString("en-US", {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  updateWeekTotal(weekStartDateString);
+
 });
+
+})
