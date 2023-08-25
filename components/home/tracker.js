@@ -4,10 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const projectDescriptionInput = document.getElementById("project-description");
   const manualStartDateInput = document.getElementById("manual-start-date");
   const timeInfoContainer = document.getElementById("time-info");
+  const startingBox = document.querySelector('.starting-box')
 
   let timerInterval;
   let startTime;
   let takenTime = 0;
+
+  const emptyDate = () =>{
+    if(manualStartDateInput.value === ""){
+      alert("Date cannot be empty !")
+    }
+  }
 
   const startTimer = () => {
     takenTime = 0;
@@ -21,6 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
     displayTimeInfo();
     resetTimer();
   };
+
+  const validateInput = () =>{
+    const projectDescriptionInput = document.getElementById("project-description").value;
+    if(projectDescriptionInput == ""){
+      alert("Project Description should not be empty !")
+      return false
+    }
+  }
 
   const updateTimer = () => {
     const currentTime = Date.now();
@@ -55,30 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
     weekTotalSpan.textContent = formatTime(weekTotalTime * 1000);
   };
 
-  const addEventListenersToEntry = (entry) => {
-    const editOptions = entry.querySelector(".edit-options");
-    const editDropdown = entry.querySelector(".edit-dropdown");
-
-    const toggleDropdown = () => {
-      editDropdown.classList.toggle("visible");
-    };
-
-    editOptions.addEventListener("click", (e) => {
-      toggleDropdown();
-      e.stopPropagation();
-    });
-
-    const closeDropdown = () => {
-      editDropdown.classList.remove("visible");
-    };
-
-    document.addEventListener("click", (e) => {
-      if (!editOptions.contains(e.target) && !editDropdown.contains(e.target)) {
-        closeDropdown();
-      }
-    });
-  };
-
   const displayTimeInfo = () => {
     const trackedTime = timerDisplay.innerHTML;
     const projectDescription = projectDescriptionInput.value;
@@ -89,9 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const endOfWeek = new Date(startDateObject);
 
     startOfWeek.setDate(startDateObject.getDate() - startDateObject.getDay());
-    endOfWeek.setDate(
-      startDateObject.getDate() + (6 - startDateObject.getDay())
-    );
+    endOfWeek.setDate(startDateObject.getDate() + (6 - startDateObject.getDay()));
 
     const weekStartDateString = startOfWeek.toUTCString().substring(0, 11);
     const weekEndDateString = endOfWeek.toUTCString().substring(0, 11);
@@ -135,9 +124,58 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     </div>
 </div>
-`;
+`;  
 
     timeInfoContainer.appendChild(newTimeEntry);
+
+    const addEventListenersToEntry = (entry) => {
+      const editOptions = entry.querySelector(".edit-options");
+      const editDropdown = entry.querySelector(".edit-dropdown");
+  
+      const toggleDropdown = () => {
+        editDropdown.classList.toggle("visible");
+      };
+  
+      editOptions.addEventListener("click", (e) => {
+        toggleDropdown();
+        e.stopPropagation();
+      });
+  
+      const closeDropdown = () => {
+        editDropdown.classList.remove("visible");
+      };
+  
+      document.addEventListener("click", (e) => {
+        if (!editOptions.contains(e.target) && !editDropdown.contains(e.target)) {
+          closeDropdown();
+        }
+      });
+  
+      const duplicateEntryHandler = (entry) => {
+        const duplicateButton = entry.querySelector(".duplicate-item");
+        duplicateButton.addEventListener("click", () => {
+          const duplicateEntry = entry.cloneNode(true);
+          addEventListenersToEntry(duplicateEntry);
+          
+          weekEntries[weekStartDateString].appendChild(duplicateEntry);
+          updateWeekTotal(weekStartDateString);
+        });
+      };
+    
+      const deleteEntryHandler = (entry) => {
+        const deleteButton = entry.querySelector(".delete-item");
+        deleteButton.addEventListener("click", () => {
+          entry.remove();
+          updateWeekTotal(weekStartDateString);
+          removeWeekHeader(weekStartDateString);
+        });
+      };  
+  
+      duplicateEntryHandler(entry); 
+      deleteEntryHandler(entry);
+    };
+  
+    startingBox.classList.add('hidden')
 
     const changeInput = document.getElementById("duplicate-input");
     changeInput.addEventListener("change", () => {
@@ -185,6 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         weekEntries[changedWeekStartDateString].appendChild(newTimeEntry);
       }
+
+      if (weekEntries[changeDateString]) {
+        weekEntries[weekStartDateString].remove();
+        delete weekEntries[weekStartDateString];
+      }
+
+      updateWeekTotal(changedWeekStartDateString);
     });
 
     if (!weekEntries[weekStartDateString]) {
@@ -198,44 +243,10 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       timeInfoContainer.appendChild(weekEntries[weekStartDateString]);
     }
-
     addEventListenersToEntry(newTimeEntry);
     weekEntries[weekStartDateString].appendChild(newTimeEntry);
 
-    const duplicateButton = newTimeEntry.querySelector(".duplicate-item");
-    duplicateButton.addEventListener("click", () => {
-      const duplicateEntry = newTimeEntry.cloneNode(true);
-
-      addEventListenersToEntry(duplicateEntry);
-      updateWeekTotal(weekStartDateString);
-
-      weekEntries[weekStartDateString].appendChild(duplicateEntry);
-      updateWeekTotal(weekStartDateString);
-
-      const cloneDuplicateButton =
-        duplicateEntry.querySelector(".duplicate-item");
-      cloneDuplicateButton.addEventListener("click", () => {
-        const clonedDuplicateEntry = duplicateEntry.cloneNode(true);
-        addEventListenersToEntry(clonedDuplicateEntry);
-
-        weekEntries[weekStartDateString].appendChild(clonedDuplicateEntry);
-        updateWeekTotal(weekStartDateString);
-      });
-
-      const deleteButton = newTimeEntry.querySelector(".delete-item");
-      deleteButton.addEventListener("click", () => {
-        newTimeEntry.remove();
-        updateWeekTotal(weekStartDateString);
-      });
-
-      const duplicateDeleteButton =
-        duplicateEntry.querySelector(".delete-item");
-      duplicateDeleteButton.addEventListener("click", () => {
-        duplicateEntry.remove();
-        updateWeekTotal(weekStartDateString);
-      });
-    });
-
+    
     const removeWeekHeader = (weekStartDateString) => {
       const weekEntry = weekEntries[weekStartDateString];
       const timeEntriesInWeek = weekEntry.querySelectorAll(".time-entry");
@@ -243,10 +254,10 @@ document.addEventListener("DOMContentLoaded", () => {
         weekEntry.remove();
       }
     };
-    updateWeekTotal(weekStartDateString);
-    removeWeekHeader(weekStartDateString);
 
     updateWeekTotal(weekStartDateString);
+    removeWeekHeader(weekStartDateString);
+    startingBox.classList.remove('hidden')
   };
 
   const resetTimer = () => {
@@ -254,16 +265,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   startButton.addEventListener("click", () => {
-    if (startButton.innerHTML === "START") {
-      startButton.innerHTML = "STOP";
-      startButton.style.backgroundColor = "red";
-      startButton.style.color = "white";
-      startTimer();
-    } else {
-      startButton.innerHTML = "START";
-      startButton.style.backgroundColor = "";
-      startButton.style.color = "";
-      stopTimer();
+    if(validateInput){
+
+        if (startButton.innerHTML === "START") {
+          startButton.innerHTML = "STOP";
+          startButton.style.backgroundColor = "red";
+          startButton.style.color = "white";
+          startTimer();
+      } else {
+          startButton.innerHTML = "START";
+          startButton.style.backgroundColor = "";
+          startButton.style.color = "";
+          stopTimer();
+      }
     }
   });
-});
+}
+);

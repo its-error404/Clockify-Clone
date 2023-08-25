@@ -14,6 +14,11 @@
     display: flex;
 }
 
+.starting-box.hidden{
+    display: none;
+    visibility: hidden;
+}
+
 .starting-box {
 
     width: 330px;
