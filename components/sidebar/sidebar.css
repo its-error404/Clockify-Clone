@@ -13,6 +13,11 @@
 .side-nav.expanded {
 
     width: 10vw;
+    transition: width 0.3s ease-in;
+}
+
+.side-nav.expanded:hover .item-menu{
+    display: none;
 }
 
 .icon-container {
