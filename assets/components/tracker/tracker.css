@@ -1,0 +1,141 @@
+.project-box input {
+    width: 58vw;
+    height: 40px;
+    margin: 8px;
+    border: none;
+    background-color: white;
+    transition: border 0.3s ease;
+    text-indent: 10px;
+}
+
+.project-box input:hover,
+.project-box input:focus {
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.project-box {
+    background-color: white;
+    width: 100%;
+}
+
+
+.add-project {
+    display: flex;
+    gap: 10px;
+    color: #5EBCF7;
+
+}
+
+.add-project:hover {
+    text-decoration: underline;
+}
+
+.add-project p {
+    margin-top: 18px;
+}
+
+.time-tracker {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 30px;
+    height: 60px;
+    margin: 2.5rem 1.5rem 3rem;
+    background-color: white;
+    box-shadow: 0 .5rem 1rem #00000026;
+    width: 93vw;
+    padding: 0.7rem 0rem;
+    align-items: center;
+}
+
+.time-tracker__header {
+    display: flex;
+    gap: 20px;
+    background-color: white;
+
+}
+
+.other-features {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 80px;
+}
+
+.timer {
+    margin-left: -55px;
+}
+
+.timer p {
+    font-size: 16px;
+}
+
+.dollar {
+    font-size: larger;
+    margin-left: -60px;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 20px;
+    font-weight: 100;
+    color: rgb(192, 186, 186);
+}
+
+.currency {
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-right: 20px;
+}
+
+.input-container {
+    margin-bottom: 10px;
+}
+
+.tags {
+    border-left: 1px rgb(223, 214, 214) dotted;
+    border-right: 1px rgb(223, 214, 214) dotted;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.start-button {
+    margin-left: -60px;
+}
+
+.start-button button {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 28px;
+    padding-right: 28px;
+    background-color: #3FAAF5;
+    color: white;
+    border: none;
+}
+
+.tracker-icons {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+
+#manual-menu {
+    filter: brightness(0) saturate(100%) invert(70%) sepia(0%) saturate(10%) hue-rotate(139deg) brightness(88%) contrast(85%);
+}
+
+.project-info {
+    display: flex;
+    gap: 10px;
+}
+
+.project-info p {
+    text-decoration: none;
+}
+
+.time-entry.project-sameproject {
+    background-color: red;
+}
+
+.calculated-time {
+    font-size: 16px;
+    color: black;
+    font-weight: 500;
+}
