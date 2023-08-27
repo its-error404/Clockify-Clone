@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateWeekTotal(weekStartDateString);
     }
   };
-  
+
   const displayTimeInfo = () => {
     const trackedTime = timerDisplay.innerHTML;
     const projectDescription = projectDescriptionInput.value;
@@ -174,83 +174,26 @@ const addEventListenersToEntry = (entry) => {
     const duplicateButton = entry.querySelector(".duplicate-item");
     duplicateButton.addEventListener("click", () => {
       const duplicateEntry = entry.cloneNode(true);
+      weekEntries[weekStartDateString].appendChild(duplicateEntry);
+      updateWeekTotal(weekStartDateString);
+
+      const duplicateEntryInput = duplicateEntry.querySelector('.duplicate-input')
+      const newInputId = 'duplicate-input-' + Date.now()
+      duplicateEntryInput.id = newInputId
+
+      const labelForAttr = duplicateEntryInput.getAttribute("aria-labelledby");
+    if (labelForAttr) {
+      const label = document.querySelector(`[id="${labelForAttr}"]`);
+      if (label) {
+        label.setAttribute("for", newInputId);
+      }
+    }
       addEventListenersToEntry(duplicateEntry);
-
-      const clonedDuplicateInput = duplicateEntry.querySelector("#duplicate-input");
-      clonedDuplicateInput.addEventListener("change", () => {
-        const changeDate = clonedDuplicateInput.value;
-        const changeDateObject = new Date(changeDate);
-        const changeDateString = changeDateObject.toUTCString().substring(0, 11);
-
-        const weekStartDateString = calculateWeekStartDate(changeDateObject);
-        const existingWeekStartString = calculateWeekStartDate(manualStartDateInput.value);
-
-        if (weekStartDateString !== existingWeekStartString) {
-          if (!weekEntries[weekStartDateString]) {
-            const newWeekEntryHeader = document.createElement("div");
-            newWeekEntryHeader.classList.add("week-entry");
-            newWeekEntryHeader.innerHTML = `
-              <div class='week-header'>
-                <p id='week-date-range'>${weekStartDateString} - ${calculateWeekEndDate(changeDateObject)}</p>
-                <p class='week-total'>Week total: <span class='calculated-week-time'>00:00:00</span></p>
-              </div>
-            `;
-            timeInfoContainer.appendChild(newWeekEntryHeader);
-            weekEntries[weekStartDateString] = newWeekEntryHeader;
-            
-            if (weekEntries[existingWeekStartString]) {
-              
-              const oldWeekEntry = weekEntries[existingWeekStartString];
-              if (oldWeekEntry.querySelectorAll(".time-entry").length === 0) {
-                oldWeekEntry.remove();
-                delete weekEntries[existingWeekStartString];
-              }
-            }
-          }
-        }
-
-        const clonedStartDateElements = duplicateEntry.querySelectorAll(".startDate");
-        clonedStartDateElements.forEach((clonedStartDateElement) => {
-          clonedStartDateElement.innerHTML = changeDateString;
-        });
-
-        const clonedTimeEntry = clonedDuplicateInput.closest(".time-entry");
-        const clonedCurrentWeekStartString = clonedTimeEntry.getAttribute("data-week-start");
-        if (clonedCurrentWeekStartString !== weekStartDateString) {
-          const newWeekEntry = weekEntries[weekStartDateString];
-          newWeekEntry.appendChild(clonedTimeEntry);
-          clonedTimeEntry.setAttribute("data-week-start", weekStartDateString);
-
-          updateWeekTotals();
-
-          const clonedOldWeekEntry = weekEntries[clonedCurrentWeekStartString];
-          if (clonedOldWeekEntry) {
-            const timeEntriesInOldWeek = clonedOldWeekEntry.querySelectorAll(".time-entry");
-            if (timeEntriesInOldWeek.length === 0) {
-              clonedOldWeekEntry.remove();
-              delete weekEntries[clonedCurrentWeekStartString];
-            }
-          }
-        }
-
-        updateWeekTotal(existingWeekStartString);
-        updateWeekTotal(weekStartDateString);
-      });
-
-      const calculateWeekStartDate = (date) => {
-        const startDateObject = new Date(date);
-        const startOfWeek = new Date(startDateObject);
-        startOfWeek.setDate(startDateObject.getDate() - startDateObject.getDay());
-        return startOfWeek.toUTCString().substring(0, 11);
-      };
-
-      const clonedStartDateString = clonedDuplicateInput.value;
-      const clonedWeekStartString = calculateWeekStartDate(clonedStartDateString);
-
-      weekEntries[clonedWeekStartString].appendChild(duplicateEntry);
-      updateWeekTotal(clonedWeekStartString);
+      
+      weekEntries[weekStartDateString].appendChild(duplicateEntry);
+      updateWeekTotal(weekStartDateString);
     });
-  };    
+  };
 
   const deleteEntryHandler = (entry) => {
     const deleteButton = entry.querySelector(".delete-item");
