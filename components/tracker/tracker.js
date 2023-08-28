@@ -172,29 +172,62 @@ const addEventListenersToEntry = (entry) => {
 
   const duplicateEntryHandler = (entry) => {
     const duplicateButton = entry.querySelector(".duplicate-item");
-    duplicateButton.addEventListener("click", () => {
+  
+    const createDuplicateEntry = () => {
       const duplicateEntry = entry.cloneNode(true);
-      weekEntries[weekStartDateString].appendChild(duplicateEntry);
-      updateWeekTotal(weekStartDateString);
-
-      const duplicateEntryInput = duplicateEntry.querySelector('.duplicate-input')
-      const newInputId = 'duplicate-input-' + Date.now()
-      duplicateEntryInput.id = newInputId
-
-      const labelForAttr = duplicateEntryInput.getAttribute("aria-labelledby");
-    if (labelForAttr) {
-      const label = document.querySelector(`[id="${labelForAttr}"]`);
-      if (label) {
-        label.setAttribute("for", newInputId);
-      }
-    }
       addEventListenersToEntry(duplicateEntry);
-      
+      return duplicateEntry;
+    };
+  
+    const duplicateInputChangeListener = (duplicateEntry) => {
+      return (event) => {
+        const changeInputDuplicate = event.target;
+        const changeDate = changeInputDuplicate.value;
+        const changeDateObject = new Date(changeDate);
+        const changeDateString = changeDateObject.toUTCString().substring(0, 11);
+  
+        const startDateElement = duplicateEntry.querySelector(".startDate");
+        startDateElement.innerHTML = changeDateString;
+  
+        const currentWeekStartDateString = duplicateEntry.getAttribute("data-week-start");
+        const newWeekStartDateString = calculateWeekStartDate(changeDateObject);
+  
+        if (newWeekStartDateString !== currentWeekStartDateString) {
+          weekEntries[newWeekStartDateString] = weekEntries[currentWeekStartDateString];
+          delete weekEntries[currentWeekStartDateString];
+          duplicateEntry.setAttribute("data-week-start", newWeekStartDateString);
+  
+          updateWeekTotal(newWeekStartDateString);
+          removeWeekHeader(currentWeekStartDateString);
+        }
+      };
+    };
+  
+    duplicateButton.addEventListener("click", () => {
+      const duplicateEntry = createDuplicateEntry();
+      updateWeekTotal(weekStartDateString);
+  
       weekEntries[weekStartDateString].appendChild(duplicateEntry);
       updateWeekTotal(weekStartDateString);
+  
+      const changeInputDuplicate = duplicateEntry.querySelector("#duplicate-input");
+      changeInputDuplicate.addEventListener("change", duplicateInputChangeListener(duplicateEntry));
     });
-  };
+  
+    const originalInputChangeListener = () => {
+    const changeDate = changeInputOriginal.value;
+    const changeDateObject = new Date(changeDate);
+    const changeDateString = changeDateObject.toUTCString().substring(0, 11);
 
+    const startDateElement = entry.querySelector(".startDate");
+    startDateElement.innerHTML = changeDateString;
+    };
+  
+    const changeInputOriginal = entry.querySelector("#duplicate-input");
+    changeInputOriginal.addEventListener("change", originalInputChangeListener);
+  };
+  
+  
   const deleteEntryHandler = (entry) => {
     const deleteButton = entry.querySelector(".delete-item");
     deleteButton.addEventListener("click", () => {
@@ -289,7 +322,6 @@ const addEventListenersToEntry = (entry) => {
         startDateElement.innerHTML = changeDateString;
       });
     
-
       const timeEntry = changeInput.closest(".time-entry");
       const currentWeekStartString = timeEntry.getAttribute("data-week-start");
       if (currentWeekStartString !== newWeekStartString) {
