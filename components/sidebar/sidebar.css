@@ -13,7 +13,6 @@
 .side-nav.expanded {
 
     width: 10vw;
-    /* height: 150vh; */
     transition: width 0.3s ease-in;
 }
 
