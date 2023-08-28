@@ -158,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!weekEntries[newWeekStartString]) {
           
-
           const newWeekEntryHeader = document.createElement("div");
           newWeekEntryHeader.classList.add("week-entry");
           newWeekEntryHeader.innerHTML = `
