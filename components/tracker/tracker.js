@@ -4,17 +4,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const projectDescriptionInput = document.getElementById("project-description");
   const manualStartDateInput = document.getElementById("manual-start-date");
   const timeInfoContainer = document.getElementById("time-info");
-  const startingBox = document.querySelector('.starting-box')
+  const startingBox = document.querySelector(".starting-box");
 
   let timerInterval;
   let startTime;
   let takenTime = 0;
+  let entryCounter = 0
 
-  const emptyDate = () =>{
-    if(manualStartDateInput.value === ""){
-      alert("Date cannot be empty !")
+  const duplicateButtonHandler = (event) => {
+    const entryId = event.target.getAttribute("data-entry-id");
+    const timeEntry = document.querySelector(`.time-entry[data-entry-id="${entryId}"]`);
+    if (timeEntry) {
+      duplicateTimeEntry(timeEntry);
     }
-  }
+  };
+
+  timeInfoContainer.addEventListener('click', (e) => {
+    var clickedElement = e.target;
+
+    // duplicate-button
+    if (clickedElement.classList.contains('duplicate-button')) {
+      duplicateButtonHandler(e);
+    }
+  });
 
   const startTimer = () => {
     takenTime = 0;
@@ -28,14 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayTimeInfo();
     resetTimer();
   };
-
-  const validateInput = () =>{
-    const projectDescriptionInput = document.getElementById("project-description").value;
-    if(projectDescriptionInput == ""){
-      alert("Project Description should not be empty !")
-      return false
-    }
-  }
 
   const updateTimer = () => {
     const currentTime = Date.now();
@@ -52,35 +56,242 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${hours}:${minutes}:${seconds}`;
   }
 
+  const calculateWeekStartDate = (date) => {
+    const startDateObject = new Date(date);
+    const startOfWeek = new Date(startDateObject);
+    startOfWeek.setDate(startDateObject.getDate() - startDateObject.getDay());
+    return startOfWeek.toUTCString().substring(0, 11);
+  };
+
+  const calculateWeekEndDate = (date) => {
+    const endDateObject = new Date(date);
+    const endOfWeek = new Date(endDateObject);
+    endOfWeek.setDate(endDateObject.getDate() + (6 - endDateObject.getDay()));
+    return endOfWeek.toUTCString().substring(0, 11);
+  };
+
   const weekEntries = {};
 
-  const updateWeekTotal = (weekStartDateString) => {
-    const weekEntry = weekEntries[weekStartDateString];
-    const weekTotalSpan = weekEntry.querySelector(".calculated-week-time");
-    let weekTotalTime = 0;
+  const updateWeekTotal = () => {
+    const weekTotalSpans = document.querySelectorAll('.week-entry .calculated-week-time');
+    
+    weekTotalSpans.forEach((weekTotalSpan) => {
+      const weekEntry = weekTotalSpan.closest('.week-entry');
+      const weekStartDateString = weekEntry.getAttribute('data-week-start');
+      let weekTotalTime = 0;
+  
+      const trackedTimeSpans = weekEntry.querySelectorAll('.calculated-time');
+      trackedTimeSpans.forEach((trackedTimeSpan) => {
+        const timeParts = trackedTimeSpan.textContent.split(':');
+        const hours = parseInt(timeParts[0]);
+        const minutes = parseInt(timeParts[1]);
+        const seconds = parseInt(timeParts[2]);
+        weekTotalTime += hours * 3600 + minutes * 60 + seconds;
+      });
+  
+      weekTotalSpan.textContent = formatTime(weekTotalTime * 1000);
+    })};
 
-    const trackedTimeSpans = weekEntry.querySelectorAll(".calculated-time");
-    trackedTimeSpans.forEach((trackedTimeSpan) => {
-      const timeParts = trackedTimeSpan.textContent.split(":");
-      const hours = parseInt(timeParts[0]);
-      const minutes = parseInt(timeParts[1]);
-      const seconds = parseInt(timeParts[2]);
-      weekTotalTime += hours * 3600 + minutes * 60 + seconds;
+  const addEventListenersToEntry = (entry) => {
+   
+    const editOptions = entry.querySelector(".edit-options");
+    const editDropdown = entry.querySelector(".edit-dropdown");
+  
+    const toggleDropdown = () => {
+      editDropdown.classList.toggle("visible");
+      const rect = editOptions.getBoundingClientRect();
+      editDropdown.style.left = `${rect.right - 100}px`;
+      editDropdown.style.top = `${rect.top + 50}px`;
+    };
+  
+    editOptions.addEventListener("click", (e) => {
+      toggleDropdown();
+      e.stopPropagation();
     });
-    weekTotalSpan.textContent = formatTime(weekTotalTime * 1000);
+
+    document.addEventListener("click", (e) => {
+      if (!editOptions.contains(e.target)) {
+        editDropdown.classList.remove("visible");
+      }
+    });
+
+    editOptions.addEventListener("blur", () => {
+      editDropdown.classList.remove("visible");
+    });
+  
+    const duplicateButton = entry.querySelector('#duplicate-button')
+    const deleteButton = entry.querySelector('#delete-button')
+  
+    duplicateButton.addEventListener("click", () => {
+      const entryId = entry.getAttribute("data-entry-id");
+      const timeEntry = document.querySelector(`.time-entry[data-entry-id="${entryId}"]`);
+      if (timeEntry) {
+        duplicateTimeEntry(timeEntry);
+      }
+    });
+  
+    deleteButton.addEventListener("click", () => {
+      const entryId = entry.getAttribute("data-entry-id");
+      const timeEntry = document.querySelector(
+        `.time-entry[data-entry-id="${entryId}"]`
+      );
+      if (timeEntry) {
+        deleteTimeEntry(timeEntry);
+      }
+    });
+  };
+
+  const attachDuplicateInputListener = (duplicateTimeEntry) =>{
+
+    // manual date change for duplicate entries
+
+    const changeInput = duplicateTimeEntry.querySelector('input[type="date"]')
+    changeInput.addEventListener("change", (event) => {
+      const changeDate = event.target.value
+      const changeDateObject = new Date(changeDate);
+      const changeDateString = changeDateObject.toUTCString().substring(0, 11);
+
+      const existingWeekStartString = calculateWeekStartDate(manualStartDateInput.value);
+      const newWeekStartString = calculateWeekStartDate(changeDateObject);
+    
+      if (newWeekStartString !== existingWeekStartString) {
+
+        if (!weekEntries[newWeekStartString]) {
+          
+          const newWeekEntryHeader = document.createElement("div");
+          newWeekEntryHeader.classList.add("week-entry");
+          newWeekEntryHeader.innerHTML = `
+            <div class='week-header'>
+              <p id='week-date-range'>${newWeekStartString} - ${calculateWeekEndDate(changeDateObject)}</p>
+              <p class='week-total'>Week total: <span class='calculated-week-time'>00:00:00</span></p>
+            </div>
+          `;
+          
+          timeInfoContainer.appendChild(newWeekEntryHeader);
+          weekEntries[newWeekStartString] = newWeekEntryHeader;
+    
+          if (weekEntries[existingWeekStartString]) {
+            const oldWeekEntry = weekEntries[existingWeekStartString];
+            if (oldWeekEntry.querySelectorAll(".time-entry").length === 0) {
+              oldWeekEntry.remove();
+              delete weekEntries[existingWeekStartString];
+            }
+          }
+        }
+      }
+      const startDateElements = duplicateTimeEntry.querySelectorAll(".startDate");
+      startDateElements.forEach((startDateElement) => {
+        startDateElement.innerHTML = changeDateString;
+      });
+    
+      const timeEntry = changeInput.closest(".time-entry");
+      const currentWeekStartString = timeEntry.getAttribute("data-week-start");
+      if (currentWeekStartString !== newWeekStartString) {
+        const newWeekEntry = weekEntries[newWeekStartString];
+        newWeekEntry.appendChild(timeEntry);
+        timeEntry.setAttribute("data-week-start", newWeekStartString);
+        
+        const oldWeekEntry = weekEntries[currentWeekStartString];
+        if (oldWeekEntry) {
+          const timeEntriesInOldWeek = oldWeekEntry.querySelectorAll(".time-entry");
+          if (timeEntriesInOldWeek.length === 0) {
+            oldWeekEntry.remove();
+            delete weekEntries[currentWeekStartString];
+          }
+        }
+      }
+
+      updateWeekTotal(existingWeekStartString);
+      updateWeekTotal(newWeekStartString);
+    });
+  }
+
+  const getWeekHeaderForDate = (startDateString) => {
+    return weekEntries[startDateString];
+    
+  };
+
+  const removeWeekHeaderIfEmpty = (weekStartDateString) => {
+    const weekEntry = weekEntries[weekStartDateString];
+    const timeEntriesInWeek = weekEntry.querySelectorAll(".time-entry");
+  
+    if (timeEntriesInWeek.length === 0) {
+      // If there are no time entries in this week, remove the week header
+      weekEntry.remove();
+      delete weekEntries[weekStartDateString];
+    }
+  };
+
+  const updateWeekHeaderAndMoveEntry = (entry, newWeekStartString, newWeekEndString) =>{
+    const oldWeekEntry = entry.closest('.week-entry')
+    const newWeekEntry = weekEntries[newWeekStartString];
+
+  if (oldWeekEntry !== newWeekEntry) {
+    oldWeekEntry.querySelector(".time-entries-container").removeChild(entry);
+    newWeekEntry.querySelector(".time-entries-container").appendChild(entry);
+
+    updateWeekTotal(oldWeekEntry.getAttribute("data-week-start"));
+    updateWeekTotal(newWeekStartString);
+    removeWeekHeaderIfEmpty(oldWeekEntry.getAttribute("data-week-start"));
+  }
+
+  const weekHeaderDiv = newWeekEntry.querySelector(".week-header");
+  weekHeaderDiv.querySelector("#week-date-range").textContent =
+    newWeekStartString + " - " + newWeekEndString;
+  }
+
+  let duplicatedEntryCounter = 0
+
+  const duplicateTimeEntry = (timeEntry) => {
+  
+    const weekEntry = timeEntry.closest(".week-entry");
+
+      const duplicatedEntry = timeEntry.cloneNode(true);
+      removeEventListener(duplicatedEntry, ()=>{console.log('done')})
+      duplicatedEntryCounter++;
+  
+      const entryId = `duplicated-entry-${duplicatedEntryCounter}`;
+      duplicatedEntry.setAttribute('data-entry-id', entryId);
+  
+      const timeEntriesContainer = weekEntry.querySelector(".time-entries-container");
+      timeEntriesContainer.appendChild(duplicatedEntry);
+
+      const duplicatedDropdown = duplicatedEntry.querySelector(".edit-dropdown");
+      duplicatedDropdown.classList.remove("visible");
+
+      attachDuplicateInputListener(duplicatedEntry)
+      updateWeekTotal(weekEntry.getAttribute("data-week-start"));
+      addEventListenersToEntry(duplicatedEntry);
+     
+  };
+
+  const deleteTimeEntry = (timeEntry) => {
+    const weekEntry = timeEntry.closest('.week-entry')
+    const weekStartDateString = weekEntry.getAttribute("data-week-start");
+    timeEntry.remove();
+  
+    updateWeekTotal(weekStartDateString);
+    removeWeekHeader(weekStartDateString);
   };
 
   const displayTimeInfo = () => {
     const trackedTime = timerDisplay.innerHTML;
     const projectDescription = projectDescriptionInput.value;
-    const startDate = manualStartDateInput.value;
+    let startDate = manualStartDateInput.value;
+
+    if(!startDate){
+      const today = new Date()
+      startDate = today.toISOString().substring(0,10)
+    }
 
     const startDateObject = new Date(startDate);
     const startOfWeek = new Date(startDateObject);
     const endOfWeek = new Date(startDateObject);
 
     startOfWeek.setDate(startDateObject.getDate() - startDateObject.getDay());
-    endOfWeek.setDate(startDateObject.getDate() + (6 - startDateObject.getDay()));
+    endOfWeek.setDate(
+      startDateObject.getDate() + (6 - startDateObject.getDay())
+    );
 
     const weekStartDateString = startOfWeek.toUTCString().substring(0, 11);
     const weekEndDateString = endOfWeek.toUTCString().substring(0, 11);
@@ -88,6 +299,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const newTimeEntry = document.createElement("div");
     newTimeEntry.classList.add("time-entry");
+    newTimeEntry.setAttribute('data-entry-id', entryCounter+1)
+    entryCounter++
     newTimeEntry.innerHTML = `
     <div class="tracked-time">
     <div class="date-container">
@@ -115,188 +328,169 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src='/assets/Edit menu dark theme.svg' width='5px' class='edit-options'>
             <div class='edit-dropdown'>
                 <div class='duplicate-item'>
-                    <p>Duplicate</p>
+                    <p id='duplicate-button' data-entry-id='${entryCounter}'>Duplicate</p>
                 </div>
                 <div class='delete-item'>
-                    <p>Delete</p>
+                    <p id='delete-button' data-entry-id='${entryCounter}'>Delete</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-`;  
-
-    timeInfoContainer.appendChild(newTimeEntry);
-
-    const addEventListenersToEntry = (entry) => {
-      const editOptions = entry.querySelector(".edit-options");
-      const editDropdown = entry.querySelector(".edit-dropdown");
-  
-      const toggleDropdown = () => {
-        editDropdown.classList.toggle("visible");
-      };
-  
-      editOptions.addEventListener("click", (e) => {
-        toggleDropdown();
-        e.stopPropagation();
-      });
-  
-      const closeDropdown = () => {
-        editDropdown.classList.remove("visible");
-      };
-  
-      document.addEventListener("click", (e) => {
-        if (!editOptions.contains(e.target) && !editDropdown.contains(e.target)) {
-          closeDropdown();
-        }
-      });
-  
-      // const duplicateEntryHandler = () => {
-      //   const duplicateButton = entry.querySelector(".duplicate-item");
-      //   duplicateButton.addEventListener("click", () => {
-      //     const duplicateEntry = entry.cloneNode(true);
-      //     addEventListenersToEntry(duplicateEntry);
-
-      //     const uniqueId = Date.now()
-      //     const duplicateInput = duplicateEntry.querySelector('#duplicate-input')
-      //     duplicateInput.value = "";
-      //     duplicateInput.id = `duplicate-input-${uniqueId}`;
-
-      //     const weekEntry = entry.closest('.week-entry')
-      //     weekEntry.appendChild(duplicateEntry)
-      //     updateWeekTotal(weekEntry.querySelector('.week-date-range').textContent)
-      //   });
-      // };
-
-      timeInfoContainer.addEventListener('click', (e)=>{
-        var duplicateButton = e.target.closest('.duplicate-item')
-        console.log(duplicateButton)
-        if(duplicateButton){
-          var entry = duplicateButton.closest('.time-entry')
-          if(entry){
-            var duplicateEntry = entry.cloneNode(true)
-            addEventListenersToEntry(duplicateEntry)
-    
-          const uniqueId = Date.now();
-          const duplicateInput = duplicateEntry.querySelector('#duplicate-input');
-          duplicateInput.value = "";
-          duplicateInput.id = `duplicate-input-${uniqueId}`;
-    
-          const weekEntry = entry.closest('.week-entry');
-          if (weekEntry) {
-            weekEntry.appendChild(duplicateEntry);
-            updateWeekTotal(weekEntry.querySelector('.week-date-range').textContent);
-          } else {
-            timeInfoContainer.appendChild(duplicateEntry);
-          }
-          }
-        }
-      })
-    
-      const deleteEntryHandler = (entry) => {
-        const deleteButton = entry.querySelector(".delete-item");
-        deleteButton.addEventListener("click", () => {
-          entry.remove();
-          updateWeekTotal(weekStartDateString);
-          removeWeekHeader(weekStartDateString);
-        });
-      };  
-      deleteEntryHandler(entry);
-    };
-  
-    startingBox.classList.add('hidden')
-
-    const changeInput = document.querySelector("#duplicate-input");
-    changeInput.addEventListener("change", () => {
-      const changeDate = changeInput.value;
-      changeDateObject = new Date(changeDate);
-
-      const newWeekStartDateString = getWeekStartDateString(changeDateObject);
-
-      if (!weekEntries[newWeekStartDateString]) {
-        const newWeekEntry = createWeekEntry(changeDateObject);
-        weekEntries[newWeekStartDateString] = newWeekEntry;
-      }
-
-      const startDateElement = entry.querySelector(".startDate");
-    startDateElement.innerHTML = changeDateObject.toUTCString().substring(0, 11);
-    
-      const changedStartOfWeek = new Date(changeDateObject);
-      const changedEndOfWeek = new Date(changeDateObject);
-
-      changedStartOfWeek.setDate(
-        changeDateObject.getDate() - changeDateObject.getDay()
-      );
-      changedEndOfWeek.setDate(
-        changeDateObject.getDate() + (6 - changeDateObject.getDay())
-      );
-
-      const changedWeekStartDateString = changedStartOfWeek
-        .toUTCString()
-        .substring(0, 11);
-      const changedWeekEndDateString = changedEndOfWeek
-        .toUTCString()
-        .substring(0, 11);
-
-      changeDateString = changeDateObject.toUTCString().substring(0, 11);
-
-      const startDateElements = document.querySelectorAll(".startDate");
-      startDateElements.forEach((startDateElement) => {
-        startDateElement.innerHTML = changeDateString;
-      });
-
-      if (!weekEntries[changeDateString]) {
-        const manualWeekEntry = document.createElement("div");
-        manualWeekEntry.classList.add("week-entry");
-        manualWeekEntry.innerHTML = `
-   <div class='week-header'>
-      <p id='week-date-range'>${changedWeekStartDateString} - ${changedWeekEndDateString}</p>
-      <p class='week-total'>Week total: <span class='calculated-week-time'>00:00:00</span></p>
-   </div>
 `;
-        manualWeekEntry.appendChild(newTimeEntry);
-        timeInfoContainer.appendChild(manualWeekEntry);
-        addEventListenersToEntry(manualWeekEntry);
+    //Getting week Header for the week Start Date
 
-        weekEntries[changedWeekStartDateString] = manualWeekEntry;
-      } else {
-        weekEntries[changedWeekStartDateString].appendChild(newTimeEntry);
-      }
+    const headerAlreadyPresent = getWeekHeaderForDate(weekStartDateString);
+    //Checcking if the week header is already present in the container, if yes, then appending the time entry to that header.
 
-      if (weekEntries[changeDateString]) {
-        weekEntries[weekStartDateString].remove();
-        delete weekEntries[weekStartDateString];
-      }
+    if (headerAlreadyPresent) {
+      const eachWeekTimeEntriesContainer = headerAlreadyPresent.querySelector(
+        ".time-entries-container"
+      );
 
-      updateWeekTotal(changedWeekStartDateString);
-    });
-
-    if (!weekEntries[weekStartDateString]) {
-      weekEntries[weekStartDateString] = document.createElement("div");
-      weekEntries[weekStartDateString].classList.add("week-entry");
-      weekEntries[weekStartDateString].innerHTML = `
-      <div class='week-header'>
-          <p id='week-date-range'>${weekStartDateString} - ${weekEndDateString}</p>
-          <p class='week-total'>Week total: <span class='calculated-week-time'>00:00:00</span></p>
-      </div>
-      `;
-      timeInfoContainer.appendChild(weekEntries[weekStartDateString]);
+      addEventListenersToEntry(newTimeEntry);
+      attachDuplicateInputListener(newTimeEntry)
+      eachWeekTimeEntriesContainer.appendChild(newTimeEntry);
+      updateWeekTotal(weekStartDateString)
+      
     }
-    addEventListenersToEntry(newTimeEntry);
-    weekEntries[weekStartDateString].appendChild(newTimeEntry);
+    //if week header is not present, creating a new week header for the time entry
+    else {
+      const WeekHeader = document.createElement("div");
+      WeekHeader.className = "week-entry";
+      WeekHeader.setAttribute(
+        "data-week-start",
+        `${weekStartDateString} - ${weekEndDateString}`
+      );
 
-    
-    const removeWeekHeader = (weekStartDateString) => {
-      const weekEntry = weekEntries[weekStartDateString];
-      const timeEntriesInWeek = weekEntry.querySelectorAll(".time-entry");
-      if (timeEntriesInWeek.length === 0) {
-        weekEntry.remove();
+      const weekHeaderDiv = document.createElement("div");
+      weekHeaderDiv.className = "week-header";
+
+      const weekDateRange = document.createElement("p");
+      weekDateRange.id = "week-date-range";
+      weekDateRange.textContent =
+        weekStartDateString + " - " + weekEndDateString;
+
+      const weekTotal = document.createElement("p");
+      weekTotal.className = "week-total";
+      weekTotal.innerHTML =
+        "Week total: <span class='calculated-week-time'>00:00:00</span>";
+
+      //Appending the week information to the week header
+      weekHeaderDiv.appendChild(weekDateRange);
+      weekHeaderDiv.appendChild(weekTotal);
+      WeekHeader.appendChild(weekHeaderDiv);
+
+      // creating a time entry container
+
+      const timeEntriesContainer = document.createElement("div");
+      timeEntriesContainer.className = "time-entries-container";
+
+      // adding the week start date to the week Entries object and appending the time entries container to the week header
+      weekEntries[weekStartDateString] = WeekHeader;
+      WeekHeader.appendChild(timeEntriesContainer);
+
+      //appending the week header to the time info container
+      timeInfoContainer.appendChild(WeekHeader);
+
+      //appedning the time entry to the time entries container and calculating the week's time
+      addEventListenersToEntry(newTimeEntry);
+      attachDuplicateInputListener(newTimeEntry)
+      timeEntriesContainer.appendChild(newTimeEntry);
+      updateWeekTotal(weekStartDateString);     
+    }
+
+    //end of creating fresh entry
+
+    startingBox.classList.add("hidden");
+
+    //Changing the input in the new Time entry div
+
+    const changeInput = newTimeEntry.querySelector('input[type="date"]');
+    changeInput.addEventListener("change", (event) => {
+      const changeDate = event.target.value;
+      const changeDateObject = new Date(changeDate);
+      const changeDateString = changeDateObject.toUTCString().substring(0, 11);
+
+      const existingWeekStartString = calculateWeekStartDate(manualStartDateInput.value);
+
+      const newWeekStartString = calculateWeekStartDate(changeDateObject);
+      const newWeekEndString = calculateWeekEndDate(changeDateObject);
+
+      if (newWeekStartString === existingWeekStartString) {
+        const startDateElement = newTimeEntry.querySelector(".startDate");
+          startDateElement.innerHTML = changeDateString;
+        const weekEntry = weekEntries[existingWeekStartString];
+        const timeEntriesContainer = weekEntry.querySelector(
+          ".time-entries-container"
+        );
+        
+        addEventListenersToEntry(newTimeEntry);
+        timeEntriesContainer.appendChild(newTimeEntry);
+        updateWeekTotal(existingWeekStartString);
+      } else {
+        if (!weekEntries[newWeekStartString]) {
+          const newWeekEntryHeader = document.createElement("div");
+          newWeekEntryHeader.className = "week-entry";
+          newWeekEntryHeader.setAttribute(
+            "data-week-start",
+            `${newWeekStartString} - ${newWeekEndString}`
+          );
+
+          const newWeekHeaderDiv = document.createElement("div");
+          newWeekHeaderDiv.className = "week-header";
+
+          const newWeekDateRange = document.createElement("p");
+          newWeekDateRange.id = "week-date-range";
+          newWeekDateRange.textContent =
+            newWeekStartString + " - " + newWeekEndString;
+
+          const newWeekTotal = document.createElement("p");
+          newWeekTotal.className = "week-total";
+          newWeekTotal.innerHTML =
+            "Week total: <span class='calculated-week-time'>00:00:00</span>";
+
+          newWeekHeaderDiv.appendChild(newWeekDateRange);
+          newWeekHeaderDiv.appendChild(newWeekTotal);
+          newWeekEntryHeader.appendChild(newWeekHeaderDiv);
+
+          const newTimeEntriesContainer = document.createElement("div");
+          newTimeEntriesContainer.className = "time-entries-container";
+
+          weekEntries[newWeekStartString] = newWeekEntryHeader;
+          newWeekEntryHeader.appendChild(newTimeEntriesContainer);
+          timeInfoContainer.appendChild(newWeekEntryHeader);
+
+          const startDateElement = newTimeEntry.querySelector(".startDate");
+          startDateElement.innerHTML = changeDateString;
+
+          newWeekEntryHeader.appendChild(newTimeEntry);
+          updateWeekTotal(newWeekStartString);
+
+          timeInfoContainer.appendChild(newWeekEntryHeader);
+        }
       }
-    };
 
-    updateWeekTotal(weekStartDateString);
-    removeWeekHeader(weekStartDateString);
-    startingBox.classList.remove('hidden')
+      if (weekEntries[existingWeekStartString]) {
+        const oldWeekEntry = weekEntries[existingWeekStartString];
+        if (oldWeekEntry.querySelectorAll(".time-entry").length === 0) {
+          oldWeekEntry.remove();
+          delete weekEntries[existingWeekStartString];
+        }
+      } 
+    });
+    //End of listener for changing input in new time entry div
+
+    //End of displayTimer
+  };
+
+  const removeWeekHeader = (weekStartDateString) => {
+    const weekEntry = document.querySelector(`[data-week-start="${weekStartDateString}"]`);
+    
+    if (weekEntry) {
+      weekEntry.remove();
+      delete weekEntries[weekStartDateString];
+    }
   };
 
   const resetTimer = () => {
@@ -304,20 +498,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   startButton.addEventListener("click", () => {
-    if(validateInput){
-
-        if (startButton.innerHTML === "START") {
-          startButton.innerHTML = "STOP";
-          startButton.style.backgroundColor = "red";
-          startButton.style.color = "white";
-          startTimer();
-      } else {
-          startButton.innerHTML = "START";
-          startButton.style.backgroundColor = "";
-          startButton.style.color = "";
-          stopTimer();
-      }
+    if (startButton.innerHTML === "START") {
+      startButton.innerHTML = "STOP";
+      startButton.style.backgroundColor = "red";
+      startButton.style.color = "white";
+      startTimer();
+    } else {
+      startButton.innerHTML = "START";
+      startButton.style.backgroundColor = "";
+      startButton.style.color = "";
+      stopTimer();
     }
   });
-}
-);
+});
