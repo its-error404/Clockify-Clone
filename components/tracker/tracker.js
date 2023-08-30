@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const weekEntry = timeEntry.closest(".week-entry");
 
       const duplicatedEntry = timeEntry.cloneNode(true);
-      removeEventListener(duplicatedEntry, ()=>{console.log('done')})
+      removeEventListener(duplicatedEntry, ()=>{})
       duplicatedEntryCounter++;
   
       const entryId = `duplicated-entry-${duplicatedEntryCounter}`;
