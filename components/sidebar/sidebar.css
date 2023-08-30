@@ -2,7 +2,7 @@
     height: 100vh;
     width: 3.5vw;
     z-index: 5;
-    transition: width 0.3s ease;
+    transition: width 0.6s ease-in-out;
     border-left: 3px solid #47B1F4;
     background-color: white;
     border-right: 1px solid #ccc;
@@ -13,11 +13,14 @@
 .side-nav.expanded {
 
     width: 10vw;
-    transition: width 0.3s ease-in;
+    transition: width 0.5s ease-in-out;
 }
 
-.side-nav.expanded:hover .item-menu{
+.side-nav.expanded:hover .item-menu:not(.dashboard-item){
     display: none;
+}
+.side-nav.expanded .dashboard-item{
+    margin-left: 120px;
 }
 
 .icon-container {
@@ -120,6 +123,8 @@
     justify-content: center;
     text-align: center;
     padding-top: 15px;
+    margin-left: 10px;
+    margin-top: -10px;
 }
 
 .side-nav.expanded .menu-text,
@@ -136,7 +141,7 @@
 
 .dashboard-item {
     max-height: 1000px;
-    margin-top: -120px;
+    margin-top: -150px;
     max-width: 500px;
     clip-path: polygon(4% 22%, 11% 19%, 11% 0, 81% 0, 83% 100%, 12% 100%, 12% 29%) !important
 }
@@ -155,17 +160,17 @@
 }
 
 .item-text h5 {
-    color: black;
+    color: rgb(134, 131, 131);
     font-weight: 300;
     text-align: start;
     margin-left: 40px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .item-text p {
     font-size: 14px;
-    color: gray;
-    line-height: 30px;
+    color: rgb(18, 17, 17);
+    line-height: 16px;
     text-align: start;
     margin-left: 20px;
     display: flex;
