@@ -123,6 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteButton = entry.querySelector('#delete-button')
   
     duplicateButton.addEventListener("click", () => {
+      
+      
       const entryId = entry.getAttribute("data-entry-id");
       const timeEntry = document.querySelector(`.time-entry[data-entry-id="${entryId}"]`);
       if (timeEntry) {
@@ -131,10 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   
     deleteButton.addEventListener("click", () => {
+      console.log('delete')
+      debugger
       const entryId = entry.getAttribute("data-entry-id");
-      const timeEntry = document.querySelector(
-        `.time-entry[data-entry-id="${entryId}"]`
-      );
+      const timeEntry = document.querySelector(`.time-entry[data-entry-id="${entryId}"]`);
       if (timeEntry) {
         deleteTimeEntry(timeEntry);
       }
@@ -191,12 +193,13 @@ document.addEventListener("DOMContentLoaded", () => {
         newWeekEntry.appendChild(timeEntry);
         timeEntry.setAttribute("data-week-start", newWeekStartString);
         
-        const oldWeekEntry = weekEntries[currentWeekStartString];
+        const convertedOldWeekEntry = currentWeekStartString.substring(0,11)
+        const oldWeekEntry = weekEntries[convertedOldWeekEntry];
         if (oldWeekEntry) {
           const timeEntriesInOldWeek = oldWeekEntry.querySelectorAll(".time-entry");
           if (timeEntriesInOldWeek.length === 0) {
             oldWeekEntry.remove();
-            delete weekEntries[currentWeekStartString];
+            delete weekEntries[convertedOldWeekEntry];
           }
         }
       }
@@ -212,7 +215,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const removeWeekHeaderIfEmpty = (weekStartDateString) => {
-    const weekEntry = weekEntries[weekStartDateString];
+    debugger
+    console.log(weekStartDateString)
+    console.log(weekEntries)
+    const convertedWeekentry = weekStartDateString.substring(0,11)
+    const weekEntry = weekEntries[convertedWeekentry];
     const timeEntriesInWeek = weekEntry.querySelectorAll(".time-entry");
   
     if (timeEntriesInWeek.length === 0) {
@@ -253,8 +260,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const entryId = `duplicated-entry-${duplicatedEntryCounter}`;
       duplicatedEntry.setAttribute('data-entry-id', entryId);
   
+      // const weekHeader = weekEntry.querySelector('.week-entry')
       const timeEntriesContainer = weekEntry.querySelector(".time-entries-container");
-      timeEntriesContainer.appendChild(duplicatedEntry);
+      weekEntry.appendChild(duplicatedEntry);
 
       const duplicatedDropdown = duplicatedEntry.querySelector(".edit-dropdown");
       duplicatedDropdown.classList.remove("visible");
@@ -266,12 +274,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const deleteTimeEntry = (timeEntry) => {
+    debugger
     const weekEntry = timeEntry.closest('.week-entry')
     const weekStartDateString = weekEntry.getAttribute("data-week-start");
     timeEntry.remove();
   
     updateWeekTotal(weekStartDateString);
-    removeWeekHeader(weekStartDateString);
+    removeWeekHeaderIfEmpty(weekStartDateString)
   };
 
   const displayTimeInfo = () => {
@@ -354,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateWeekTotal(weekStartDateString)
       
     }
-    //if week header is not present, creating a new week header for the time entry
+    // if week header is not present, creating a new week header for the time entry
     else {
       const WeekHeader = document.createElement("div");
       WeekHeader.className = "week-entry";
